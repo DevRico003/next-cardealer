@@ -127,12 +127,12 @@ function CarListingLeftSidebar() {
                             </ul>
                             <div className="content-btm">
                               <Link legacyBehavior href={`/car-details/${car.id}`}>
-                                <a className="view-btn2">View Details</a>
+                                <a className="view-btn2">Details</a>
                               </Link>
                               <div className="brand">
                                 <Link legacyBehavior href="/single-brand-category">
                                   <a>
-                                    <img src="assets/img/home1/icon/bmw.svg" alt="brand logo" />
+                                    <img src={`assets/img/home1/icon/${car.make}.svg`} alt="brand logo" />
                                   </a>
                                 </Link>
                               </div>
