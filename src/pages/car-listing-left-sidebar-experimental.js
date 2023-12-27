@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { latestCar } from '../data/data';
 import MainLayout from '../layout/MainLayout';
 import CarLeftSidebar from '../utils/CarLeftSidebar';
-import SelectComponent from '../utils/SelectComponent';
+// import SelectComponent from '../utils/SelectComponent';
 import Link from 'next/link';
 
 function CarListingLeftSidebar() {
@@ -11,7 +11,7 @@ function CarListingLeftSidebar() {
   const [selectedCondition, setSelectedCondition] = useState(null);
   const [searchInput, setSearchInput] = useState('');
   const [currentPage, setCurrentPage] = useState(1); // New state for current page
-  const itemsPerPage = 20; // Number of cars per page
+  const itemsPerPage = 10; // Number of cars per page
 
   useEffect(() => {
     let filteredCars = latestCar;
@@ -24,15 +24,15 @@ function CarListingLeftSidebar() {
     setCars(filteredCars);
   }, [selectedCondition, searchInput]);
 
-  const toggleView = () => {
-    setActiveClass(activeClass === 'grid-group-wrapper' ? 'list-group-wrapper' : 'grid-group-wrapper');
-  };
+  // const toggleView = () => {
+  //   setActiveClass(activeClass === 'grid-group-wrapper' ? 'list-group-wrapper' : 'grid-group-wrapper');
+  // };
 
-  const conditions = ['Used Car', 'New Car'];
+  // const conditions = ['Used Car', 'New Car'];
 
-  const handleConditionChange = (newCondition) => {
-    setSelectedCondition(newCondition);
-  };
+  // const handleConditionChange = (newCondition) => {
+  //   setSelectedCondition(newCondition);
+  // };
 
   const handleSearchInputChange = (newSearchInput) => {
     setSearchInput(newSearchInput);
@@ -58,33 +58,33 @@ function CarListingLeftSidebar() {
                 <div className="col-lg-12">
                   <div className="show-item-and-filter">
                     <p>Showing <strong>{cars.length}</strong> cars available in stock</p>
-                    <div className="filter-view">
+                    {/* <div className="filter-view">
                       <div className="filter-atra">
-                        {/* <h6>Filter By:</h6>
+                        <h6>Filter By:</h6>
                         <form>
                           <div className="form-inner">
                             <SelectComponent placeholder="Select conditions" options={conditions} />
                           </div>
                         </form> */}
-                      </div>
-                      <div className="view">
-                        <ul className="btn-group list-grid-btn-group">
-                          <li className={activeClass === 'grid-group-wrapper' ? 'active grid' : 'grid'} onClick={toggleView}>
+                      {/* </div> */}
+                      {/* <div className="view"> */}
+                        {/* <ul className="btn-group list-grid-btn-group"> */}
+                          {/* <li className={activeClass === 'grid-group-wrapper' ? 'active grid' : 'grid'} onClick={toggleView}> */}
                             {/* Grid View Icon */}
-                          </li>
-                          <li className={activeClass === 'list-group-wrapper' ? 'active list' : 'list'} onClick={toggleView}>
+                          {/* </li> */}
+                          {/* <li className={activeClass === 'list-group-wrapper' ? 'active list' : 'list'} onClick={toggleView}> */}
                             {/* List View Icon */}
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+                          {/* </li> */}
+                        {/* </ul> */}
+                      {/* </div> */}
+                    {/* </div> */}
                   </div>
                 </div>
               </div>
               <div className="list-grid-main">
                 <div className={`list-grid-product-wrap ${activeClass}`}>
                   <div className="row g-4 justify-content-center mb-40">
-                    {cars.map((car) => (
+                    {displayedCars.map((car) => (
                       <div key={car.id} className="col-lg-6 col-md-6 col-sm-12 wow fadeInUp item" data-wow-delay="200ms">
                         <div className="product-card">
                           <div className="product-img">
@@ -149,7 +149,7 @@ function CarListingLeftSidebar() {
                           <ul>
                           {pageNumbers.map(pageNumber => (
                               <li key={pageNumber} className={pageNumber === currentPage ? 'active' : ''}>
-                                <a href="#" onClick={() => handlePageChange(pageNumber)}>{pageNumber}</a>
+                                <a href="#" onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}>{pageNumber}</a>
                               </li>
                             ))}
                             {/* Additional Pagination */}
