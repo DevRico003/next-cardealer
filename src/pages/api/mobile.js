@@ -55,6 +55,24 @@ const execute = async (queryParams) => {
   }
 };
 
+// Function to retrieve the "$" or "@key" value from the specifics
+const getValue = (item) => {
+  // Check if the item is an object and not null
+  if (typeof item === 'object' && item !== null) {
+    // Return the "$" value if it exists
+    if ("$" in item) {
+      return item["$"];
+    }
+    // If "$" doesn't exist, check and return the "@key" value
+    else if ("@key" in item) {
+      return item["@key"];
+    }
+  }
+  // Return the item itself if it's a primitive and not null or undefined
+  return item || "Unknown";
+};
+
+
 // Function to map the data to the required structure
 const mapData = (data) => {
   if (!data["search-result"] || !data["search-result"]["ads"] || !Array.isArray(data["search-result"]["ads"].ad)) {
@@ -75,20 +93,42 @@ const mapData = (data) => {
       console.error("Category description or URL is undefined", ad);
     }
 
+    // Ensure specifics is defined from the correct location
+    const specifics = ad?.vehicle?.specifics;
+
+    // Map specifics with the utility function, excluding 'fuel'
+    const mappedSpecifics = {};
+    for (const key in specifics) {
+      if (specifics.hasOwnProperty(key) && key !== 'fuel') { // Skip the 'fuel' key
+        const item = specifics[key];
+        const value = getValue(item["local-description"]) ?? getValue(item);
+        // Only add the key if the value is not "Unknown"
+        if (value !== "Unknown") {
+          mappedSpecifics[key] = value;
+        }
+      }
+    }
+
     return {
       id: parseInt(ad["@key"]),
       location: `${ad?.seller?.address?.city?.["@value"]}, ${ad?.seller?.address?.["country-code"]?.["@value"]}`,
+      make: ad["vehicle"]["make"]["@key"],
       carModel: `${ad?.vehicle?.make?.["local-description"]?.["$"]} ${ad?.vehicle?.model?.["local-description"]?.["$"]}`,
       mileage: `${ad?.vehicle?.specifics?.mileage?.["@value"]} km`,
+      firstRegistration: ad["vehicle"]["specifics"]["first-registration"]["@value"],
       fuelTypes: [fuelType],
       isElectric: fuelKey === "HYBRID",
-      priceCategory: "N/A", // Assuming this data is not available
+      power: ad["vehicle"]["specifics"]["power"]["@value"] + " PS",
+      gearbox: ad["vehicle"]["specifics"]["gearbox"]["local-description"]["$"],
+      numSeats: ad["vehicle"]["specifics"]["num-seats"]["@value"],
       price: parseFloat(ad["price"]["consumer-price-amount"]["@value"]),
       images: ad["images"]["image"]["representation"].map((img) => img["@url"]),
       category: {
         name: categoryDescription,
         slug: categoryUrl?.split('/').pop(),
       },
+      // Add all other specifics mappings as needed
+      ...mappedSpecifics
     };
   });
 };
@@ -131,7 +171,7 @@ const mapData = (data) => {
     vehicle: {
       class: ad["vehicle"]["class"]["$"],
       category: ad["vehicle"]["category"]["$"],
-      make: ad["vehicle"]["make"]["$"],
+      make: ad["vehicle"]["make"]["@key"],
       model: ad["vehicle"]["model"]["$"],
       modelDescription: ad["vehicle"]["model-description"]["@value"],
       roadworthy: ad["vehicle"]["roadworthy"]["@value"] === "true",

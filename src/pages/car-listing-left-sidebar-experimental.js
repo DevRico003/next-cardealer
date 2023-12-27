@@ -68,7 +68,7 @@ function CarListingLeftSidebar() {
                             <div className="swiper product-img-slider">
                               <div className="swiper-wrapper">
                                 <div className="swiper-slide">
-                                  <img src={car.image} alt={car.carModel} />
+                                  <img src={car.images[1]} alt={car.carModel} />
                                 </div>
                                 {/* Additional Images */}
                               </div>
@@ -77,12 +77,12 @@ function CarListingLeftSidebar() {
                           <div className="product-content">
                             <h5>
                               <Link legacyBehavior href={`/car-details/${car.id}`}>
-                                <a>{car.carModel}-{new Date().getFullYear()}</a>
+                                <a>{car.carModel}</a>
                               </Link>
                             </h5>
                             <div className="price-location">
                               <div className="price">
-                                <strong>${car.price.toLocaleString()}</strong>
+                                <strong>€{car.price.toLocaleString()}</strong>
                               </div>
                               <div className="location">
                                 <a href="#">
@@ -95,7 +95,7 @@ function CarListingLeftSidebar() {
                                 <img src="assets/img/home4/icon/miles.svg" alt="" /> {car.mileage}
                               </li>
                               <li>
-                                <img src="assets/img/home4/icon/fuel.svg" alt="" /> {car.fuelType}
+                                <img src="assets/img/home4/icon/fuel.svg" alt="" /> {car.fuelTypes}
                               </li>
                               {/* Additional Features */}
                             </ul>
@@ -106,7 +106,7 @@ function CarListingLeftSidebar() {
                               <div className="brand">
                                 <Link legacyBehavior href="/single-brand-category">
                                   <a>
-                                    <img src={car.brandLogo} alt="brand logo" />
+                                    <img src="assets/img/home1/icon/bmw.svg" alt="brand logo" />
                                   </a>
                                 </Link>
                               </div>
