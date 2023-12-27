@@ -5,15 +5,24 @@ import CarLeftSidebar from '../utils/CarLeftSidebar';
 import SelectComponent from '../utils/SelectComponent';
 import Link from 'next/link';
 
-
 function CarListingLeftSidebar() {
   const [activeClass, setActiveClass] = useState('grid-group-wrapper');
   const [cars, setCars] = useState([]);
+  const [selectedCondition, setSelectedCondition] = useState(null);
+  const [searchInput, setSearchInput] = useState('');
+  const [currentPage, setCurrentPage] = useState(1); // New state for current page
+  const itemsPerPage = 20; // Number of cars per page
 
   useEffect(() => {
-    // Directly set the cars state with the latestCar array
-    setCars(latestCar);
-}, []); // Empty dependency array ensures this runs once on mount
+    let filteredCars = latestCar;
+    if (selectedCondition) {
+      filteredCars = filteredCars.filter(car => car.condition === selectedCondition);
+    }
+    if (searchInput) {
+      filteredCars = filteredCars.filter(car => car.make.toLowerCase().includes(searchInput.toLowerCase()));
+    }
+    setCars(filteredCars);
+  }, [selectedCondition, searchInput]);
 
   const toggleView = () => {
     setActiveClass(activeClass === 'grid-group-wrapper' ? 'list-group-wrapper' : 'grid-group-wrapper');
@@ -21,6 +30,23 @@ function CarListingLeftSidebar() {
 
   const conditions = ['Used Car', 'New Car'];
 
+  const handleConditionChange = (newCondition) => {
+    setSelectedCondition(newCondition);
+  };
+
+  const handleSearchInputChange = (newSearchInput) => {
+    setSearchInput(newSearchInput);
+  };
+
+  const handlePageChange = (newPage) => { // New function to handle page changes
+    setCurrentPage(newPage);
+  };
+
+  const totalPages = Math.ceil(cars.length / itemsPerPage); // Total number of pages
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1); // Array of page numbers
+
+  const displayedCars = cars.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // New line to slice cars array
+  console.log(cars)
   return (
     <MainLayout>
       <div className="product-page pt-100 mb-100">
@@ -34,12 +60,12 @@ function CarListingLeftSidebar() {
                     <p>Showing <strong>{cars.length}</strong> cars available in stock</p>
                     <div className="filter-view">
                       <div className="filter-atra">
-                        <h6>Filter By:</h6>
+                        {/* <h6>Filter By:</h6>
                         <form>
                           <div className="form-inner">
                             <SelectComponent placeholder="Select conditions" options={conditions} />
                           </div>
-                        </form>
+                        </form> */}
                       </div>
                       <div className="view">
                         <ul className="btn-group list-grid-btn-group">
@@ -121,8 +147,11 @@ function CarListingLeftSidebar() {
                       <div className="pagination-and-next-prev">
                         <div className="pagination">
                           <ul>
-                            <li className="active"><a href="#">01</a></li>
-                            <li><a href="#">02</a></li>
+                          {pageNumbers.map(pageNumber => (
+                              <li key={pageNumber} className={pageNumber === currentPage ? 'active' : ''}>
+                                <a href="#" onClick={() => handlePageChange(pageNumber)}>{pageNumber}</a>
+                              </li>
+                            ))}
                             {/* Additional Pagination */}
                           </ul>
                         </div>

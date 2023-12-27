@@ -3,6 +3,7 @@ import fs from 'fs'
 
 let instance = null;
 let error = null;
+let currentPage = 1
 
 const encodedCredentials = process.env.ENCODED_CREDENTIALS
 
@@ -24,7 +25,7 @@ const execute = async (queryParams) => {
     const url = new URL(baseUrl);
 
     // Hardcoded query parameter
-    const queryParams = { customerNumber: '726774' };
+    const queryParams = { customerNumber: '726774', "page.number": Number(currentPage) };
 
     // Append query parameters from the request to the URL
     Object.keys(queryParams).forEach(key => {
@@ -88,6 +89,9 @@ const mapData = (data) => {
     // Use optional chaining and nullish coalescing to safely access nested properties
     const fuelType = ad?.vehicle?.specifics?.fuel?.["local-description"]?.["$"] ?? "Unknown";
     const fuelKey = ad?.vehicle?.specifics.fuel?.["@key"];
+    // Safely access the numSeats value with optional chaining and nullish coalescing
+    const numSeats = ad?.vehicle?.specifics?.["num-seats"]?.["@value"] ?? "Unknown";
+
 
     if (!categoryDescription || !categoryUrl) {
       console.error("Category description or URL is undefined", ad);
@@ -120,7 +124,7 @@ const mapData = (data) => {
       isElectric: fuelKey === "HYBRID",
       power: ad["vehicle"]["specifics"]["power"]["@value"] + " PS",
       gearbox: ad["vehicle"]["specifics"]["gearbox"]["local-description"]["$"],
-      numSeats: ad["vehicle"]["specifics"]["num-seats"]["@value"],
+      numSeats: numSeats,
       price: parseFloat(ad["price"]["consumer-price-amount"]["@value"]),
       images: ad["images"]["image"]["representation"].map((img) => img["@url"]),
       category: {
@@ -136,27 +140,54 @@ const mapData = (data) => {
 
 // Next.js API route handler
 export default async function handler(req, res) {
-  const instance = getInstance();
-  const result = await execute(req.query); // Pass all query parameters to the execute function
+  // let currentPage = Number(jsonResponse["search-result"]["current-page"])
+  let maxPages = null;
+  let allMappedData = []; // Store all mapped data across pages
 
-  if (result) {
-    const mappedData = mapData(result); // Map the data
+  while (maxPages === null || currentPage <= maxPages) {
+    console.log(`Fetching data for page: ${currentPage}`); // Log the current page being fetched
 
-    // Save the mapped data to a file
-    fs.writeFile('mappedData.js', `export const latestCars = ${JSON.stringify(mappedData, null, 2)};`, (err) => {
-      if (err) {
-        console.error('Error writing to file', err);
-        res.status(500).json({ error: 'Failed to write to file' });
-        return;
-      }
+    const queryParams = {
+      ...req.query, // Spread any additional query parameters
+      "customerNumber": '726774',
+      "page.number": currentPage // Use the updated currentPage value
+    };
+    
+    const result = await execute(queryParams); // Pass the updated query parameters
 
-      console.log('Mapped data saved to mappedData.js');
-      res.status(200).send(mappedData); // Send the mapped data as response
-    });
-  } else {
-    const currentError = getError();
-    res.status(500).json({ error: currentError });
+    if (result) {
+      const jsonResponse = result;
+      maxPages = Number(jsonResponse["search-result"]["max-pages"]);
+      
+      const mappedData = mapData(result); // Map the data for the current page
+      allMappedData = allMappedData.concat(mappedData); // Append the mapped data for the current page to the total
+
+      if (currentPage <= maxPages) {
+        currentPage++; // Increment to fetch the next page in the next iteration
+       } else {
+        currentPage = 1;
+       } 
+      
+      console.log(`Moving to next page: ${currentPage}`); // Log the next page to be fetched
+    } else {
+      const currentError = getError();
+      console.error('Error fetching data for page:', currentPage, currentError);
+      res.status(500).json({ error: `Failed at page ${currentPage}: ${currentError}` });
+      return;
+    }
   }
+
+  // Append the final mapped data to the file
+  fs.writeFile('mappedData.js', `export const latestCar = ${JSON.stringify(allMappedData, null, 2)};`, (err) => {
+    if (err) {
+      console.error('Error appending to file', err);
+      res.status(500).json({ error: 'Failed to write to file' });
+      return;
+    }
+
+    console.log('All mapped data appended to mappedData.js');
+    res.status(200).send(allMappedData); // Send the total mapped data as response
+  });
 }
 
 
