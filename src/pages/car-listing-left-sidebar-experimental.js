@@ -11,6 +11,7 @@ function CarListingLeftSidebar() {
   const [cars, setCars] = useState([]);
   const [makeFilter, setMakeFilter] = useState('');
   const [modelFilter, setModelFilter] = useState([]);
+  const [fuelTypeFilter, setFuelTypeFilter] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
@@ -26,34 +27,31 @@ function CarListingLeftSidebar() {
     if (modelFilter.length > 0) {
       filteredCars = filteredCars.filter(car => modelFilter.includes(car.carModel));
     }
+
+    // Filter cars that match any of the selected fuel types
+    if (fuelTypeFilter.length > 0) {
+      filteredCars = filteredCars.filter(car =>
+        car.fuelTypes.some(fuelType => fuelTypeFilter.includes(fuelType.trim()))
+      );
+    }
+    
   
     setCars(filteredCars);
-  }, [makeFilter, modelFilter]);  // Depend on both makeFilter and modelFilter
-  
-  
-
-  // const toggleView = () => {
-  //   setActiveClass(activeClass === 'grid-group-wrapper' ? 'list-group-wrapper' : 'grid-group-wrapper');
-  // };
-
-  // const conditions = ['Used Car', 'New Car'];
-
-  // const handleConditionChange = (newCondition) => {
-  //   setSelectedCondition(newCondition);
-  // };
-
-  // const handleSearchInputChange = (newSearchInput) => {
-  //   setSearchInput(newSearchInput);
-  // };
+  }, [makeFilter, modelFilter, fuelTypeFilter]);
 
   const handlePageChange = (newPage) => { // New function to handle page changes
     setCurrentPage(newPage);
   };
 
-  // Function to update the modelFilter state
-const onModelFilterChange = (newModelFilter) => {
-  setModelFilter(newModelFilter);
-};
+    // Function to update the modelFilter state
+  const onModelFilterChange = (newModelFilter) => {
+    setModelFilter(newModelFilter);
+  };
+
+  // Function to update the fuelTypeFilter state
+  const onFuelTypeFilterChange = (newFuelTypeFilter) => {
+    setFuelTypeFilter(newFuelTypeFilter);
+  };
 
   const totalPages = Math.ceil(cars.length / itemsPerPage); // Total number of pages
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1); // Array of page numbers
@@ -69,32 +67,13 @@ const onModelFilterChange = (newModelFilter) => {
             <CarLeftSidebarExp 
                     onMakeFilterChange={setMakeFilter}
                     onModelFilterChange={onModelFilterChange}
-        />
+                    onFuelTypeFilterChange={setFuelTypeFilter} 
+            />
             <div className="col-xl-8 order-xl-2 order-1">
               <div className="row mb-40">
                 <div className="col-lg-12">
                   <div className="show-item-and-filter">
                     <p>Es gibt <strong>{cars.length}</strong> verfügbare Autos.</p>
-                    {/* <div className="filter-view">
-                      <div className="filter-atra">
-                        <h6>Filter By:</h6>
-                        <form>
-                          <div className="form-inner">
-                            <SelectComponent placeholder="Select conditions" options={conditions} />
-                          </div>
-                        </form> */}
-                      {/* </div> */}
-                      {/* <div className="view"> */}
-                        {/* <ul className="btn-group list-grid-btn-group"> */}
-                          {/* <li className={activeClass === 'grid-group-wrapper' ? 'active grid' : 'grid'} onClick={toggleView}> */}
-                            {/* Grid View Icon */}
-                          {/* </li> */}
-                          {/* <li className={activeClass === 'list-group-wrapper' ? 'active list' : 'list'} onClick={toggleView}> */}
-                            {/* List View Icon */}
-                          {/* </li> */}
-                        {/* </ul> */}
-                      {/* </div> */}
-                    {/* </div> */}
                   </div>
                 </div>
               </div>
