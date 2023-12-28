@@ -1,63 +1,63 @@
 export const BrandCategoryHome1 = [
   {
     id: 1,
-    icons: "assets/img/home1/icon/suzuki.svg",
+    icons: "assets/img/home1/icon/JEEP.svg",
     image: "assets/img/home1/icon/suzuki-car.svg",
   },
   {
     id: 2,
-    icons: "assets/img/home1/icon/bmw.svg",
+    icons: "assets/img/home1/icon/BMW.svg",
     image: "assets/img/home1/icon/bmw-car.svg",
   },
   {
     id: 3,
-    icons: "assets/img/home1/icon/toyota.svg",
+    icons: "assets/img/home1/icon/TOYOTA.svg",
     image: "assets/img/home1/icon/toyota-car.svg",
   },
   {
     id: 4,
-    icons: "assets/img/home1/icon/tesla.svg",
+    icons: "assets/img/home1/icon/TESLA.svg",
     image: "assets/img/home1/icon/tesla-car.svg",
   },
   {
     id: 5,
-    icons: "assets/img/home1/icon/honda.svg",
+    icons: "assets/img/home1/icon/AUDI.svg",
     image: "assets/img/home1/icon/honda-car.svg",
   },
   {
     id: 6,
-    icons: "assets/img/home1/icon/mazda.svg",
+    icons: "assets/img/home1/icon/FORD.svg",
 
     image: "assets/img/home1/icon/mazda-car.svg",
   },
   {
     id: 7,
-    icons: "assets/img/home1/icon/suzuki.svg",
+    icons: "assets/img/home1/icon/LAND ROVER.svg",
     image: "assets/img/home1/icon/suzuki-car.svg",
   },
   {
     id: 8,
-    icons: "assets/img/home1/icon/bmw.svg",
+    icons: "assets/img/home1/icon/MINI.svg",
     image: "assets/img/home1/icon/bmw-car.svg",
   },
   {
     id: 9,
-    icons: "assets/img/home1/icon/toyota.svg",
+    icons: "assets/img/home1/icon/MERCEDES-BENZ.svg",
     image: "assets/img/home1/icon/toyota-car.svg",
   },
   {
     id: 10,
-    icons: "assets/img/home1/icon/tesla.svg",
+    icons: "assets/img/home1/icon/LAMBORGHINI.svg",
     image: "assets/img/home1/icon/tesla-car.svg",
   },
   {
     id: 11,
-    icons: "assets/img/home1/icon/honda.svg",
+    icons: "assets/img/home1/icon/SKODA.svg",
     image: "assets/img/home1/icon/honda-car.svg",
   },
   {
     id: 12,
-    icons: "assets/img/home1/icon/mazda.svg",
+    icons: "assets/img/home1/icon/VW.svg",
     image: "assets/img/home1/icon/mazda-car.svg",
   },
 ];

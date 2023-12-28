@@ -1,5 +1,6 @@
 import React from 'react'
 import SelectComponent from './SelectComponent'
+import { latestCar } from '../data/data';
 
 function CarLeftSidebar() {
     const min = ["10000","11000","13200","15000"]
@@ -8,6 +9,7 @@ function CarLeftSidebar() {
     const maxyear = ["2019","2020","2021","2022"]
   return (
     <div className="col-xl-4 order-xl-1 order-2">
+      {/* Search Filters */}
       <div className="filter-area mb-40">
         <div className="title-and-close-btn mb-20">
           <h6>Search Filters</h6>
@@ -39,6 +41,7 @@ function CarLeftSidebar() {
         </div>
       </div>
       <div className="product-sidebar">
+        {/* Make */}
         <div className="product-widget mb-20">
           <div className="check-box-item">
             <h6 className="product-widget-title mb-20">Make</h6>
@@ -107,6 +110,7 @@ function CarLeftSidebar() {
             </div>
           </div>
         </div>
+        {/* Year */}
         <div className="product-widget mb-20">
           <div className="check-box-item">
             <h6 className="product-widget-title mb-20">Year</h6>
@@ -126,6 +130,7 @@ function CarLeftSidebar() {
             </div>
           </div>
         </div>
+        {/* Body Type */}
         <div className="product-widget mb-20">
           <div className="check-box-item">
             <h6 className="product-widget-title mb-20">Body Type</h6>
@@ -191,6 +196,7 @@ function CarLeftSidebar() {
             </div>
           </div>
         </div>
+        {/* Price */}
         <div className="product-widget mb-20">
           <div className="check-box-item">
             <h6 className="product-widget-title mb-25">Price</h6>
@@ -211,6 +217,7 @@ function CarLeftSidebar() {
             </div>
           </div>
         </div>
+        {/* Mileage */}
         <div className="product-widget mb-20">
           <div className="check-box-item">
             <h6 className="product-widget-title mb-20">Mileage</h6>
@@ -230,6 +237,7 @@ function CarLeftSidebar() {
             </div>
           </div>
         </div>
+        {/* Colors */}
         <div className="product-widget mb-20">
           <div className="check-box-item">
             <h6 className="product-widget-title mb-20">Colors</h6>
@@ -329,6 +337,7 @@ function CarLeftSidebar() {
             </div>
           </div>
         </div>
+        {/* Location */}
         <div className="product-widget mb-20">
           <div className="check-box-item">
             <h6 className="product-widget-title mb-20">Location</h6>

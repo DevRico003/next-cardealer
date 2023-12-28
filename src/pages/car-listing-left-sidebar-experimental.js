@@ -2,27 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { latestCar } from '../data/data';
 import MainLayout from '../layout/MainLayout';
 import CarLeftSidebar from '../utils/CarLeftSidebar';
+import CarLeftSidebarExp from '../utils/CarLeftSidebar-experimental';
 // import SelectComponent from '../utils/SelectComponent';
 import Link from 'next/link';
 
 function CarListingLeftSidebar() {
   const [activeClass, setActiveClass] = useState('grid-group-wrapper');
   const [cars, setCars] = useState([]);
-  const [selectedCondition, setSelectedCondition] = useState(null);
-  const [searchInput, setSearchInput] = useState('');
-  const [currentPage, setCurrentPage] = useState(1); // New state for current page
-  const itemsPerPage = 10; // Number of cars per page
+  const [makeFilter, setMakeFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     let filteredCars = latestCar;
-    if (selectedCondition) {
-      filteredCars = filteredCars.filter(car => car.condition === selectedCondition);
+
+    if (makeFilter.length > 0) {
+      // Filter cars that match any of the selected makes
+      filteredCars = filteredCars.filter(car => makeFilter.includes(car.make));
     }
-    if (searchInput) {
-      filteredCars = filteredCars.filter(car => car.make.toLowerCase().includes(searchInput.toLowerCase()));
-    }
+
     setCars(filteredCars);
-  }, [selectedCondition, searchInput]);
+  }, [makeFilter]);
+  
 
   // const toggleView = () => {
   //   setActiveClass(activeClass === 'grid-group-wrapper' ? 'list-group-wrapper' : 'grid-group-wrapper');
@@ -34,9 +35,9 @@ function CarListingLeftSidebar() {
   //   setSelectedCondition(newCondition);
   // };
 
-  const handleSearchInputChange = (newSearchInput) => {
-    setSearchInput(newSearchInput);
-  };
+  // const handleSearchInputChange = (newSearchInput) => {
+  //   setSearchInput(newSearchInput);
+  // };
 
   const handlePageChange = (newPage) => { // New function to handle page changes
     setCurrentPage(newPage);
@@ -44,20 +45,23 @@ function CarListingLeftSidebar() {
 
   const totalPages = Math.ceil(cars.length / itemsPerPage); // Total number of pages
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1); // Array of page numbers
-
   const displayedCars = cars.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // New line to slice cars array
+
   console.log(cars)
   return (
     <MainLayout>
       <div className="product-page pt-100 mb-100">
         <div className="container">
           <div className="row g-xl-4 gy-5">
-            <CarLeftSidebar />
+            {/* <CarLeftSidebar /> */}
+            <CarLeftSidebarExp 
+                    onMakeFilterChange={setMakeFilter}
+        />
             <div className="col-xl-8 order-xl-2 order-1">
               <div className="row mb-40">
                 <div className="col-lg-12">
                   <div className="show-item-and-filter">
-                    <p>Showing <strong>{cars.length}</strong> cars available in stock</p>
+                    <p>Es gibt <strong>{cars.length}</strong> verfügbare Autos.</p>
                     {/* <div className="filter-view">
                       <div className="filter-atra">
                         <h6>Filter By:</h6>
