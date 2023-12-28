@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import CarLeftSidebar from '../utils/CarLeftSidebar'
+import CarLeftSidebar from '../utils/CarLeftSidebarTemplateDesign'
 import SelectComponent from '../utils/SelectComponent';
 import MainLayout from '../layout/MainLayout';
 import Link from 'next/link'
