@@ -12,6 +12,7 @@ function CarListingLeftSidebar() {
   const [makeFilter, setMakeFilter] = useState('');
   const [modelFilter, setModelFilter] = useState([]);
   const [fuelTypeFilter, setFuelTypeFilter] = useState([]);
+  const [gearboxFilter, setGearboxFilter] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
@@ -35,9 +36,15 @@ function CarListingLeftSidebar() {
       );
     }
     
+    // Filter cars that match any of the selected gearboxes
+    if (gearboxFilter.length > 0) {
+      filteredCars = filteredCars.filter(car =>
+        gearboxFilter.includes(car.gearbox) // Make sure 'gearbox' matches your data
+      );
+    }
   
     setCars(filteredCars);
-  }, [makeFilter, modelFilter, fuelTypeFilter]);
+  }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter]);
 
   const handlePageChange = (newPage) => { // New function to handle page changes
     setCurrentPage(newPage);
@@ -51,6 +58,11 @@ function CarListingLeftSidebar() {
   // Function to update the fuelTypeFilter state
   const onFuelTypeFilterChange = (newFuelTypeFilter) => {
     setFuelTypeFilter(newFuelTypeFilter);
+  };
+
+  // Function to update the gearboxFilter state
+  const onGearboxFilterChange = (newGearboxFilter) => {
+    setGearboxFilter(newGearboxFilter);
   };
 
   const totalPages = Math.ceil(cars.length / itemsPerPage); // Total number of pages
@@ -68,6 +80,7 @@ function CarListingLeftSidebar() {
                     onMakeFilterChange={setMakeFilter}
                     onModelFilterChange={onModelFilterChange}
                     onFuelTypeFilterChange={setFuelTypeFilter} 
+                    onGearboxFilterChange={onGearboxFilterChange}
             />
             <div className="col-xl-8 order-xl-2 order-1">
               <div className="row mb-40">

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { latestCar } from '../data/data';
 
-function CarLeftSidebarExp({ onMakeFilterChange, onModelFilterChange, onFuelTypeFilterChange }) {
+function CarLeftSidebarExp({ onMakeFilterChange, onModelFilterChange, onFuelTypeFilterChange, onGearboxFilterChange }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMakes, setSelectedMakes] = useState([]);
   const [selectedModels, setSelectedModels] = useState([]);
   const [fuelTypeFilter, setFuelTypeFilter] = useState([]);
+  const [selectedGearboxes, setSelectedGearboxes] = useState([]);
   
   const getUniqueValues = (key) => {
     const allValues = latestCar.map((car) => car[key]);
@@ -80,9 +81,28 @@ function CarLeftSidebarExp({ onMakeFilterChange, onModelFilterChange, onFuelType
     return uniqueFuelTypes.map(fuelType => fuelType.charAt(0) + fuelType.slice(1)).sort();
   };
   
+  // Handler for gearbox changes
+  const handleGearboxCheckboxChange = (gearbox) => {
+    const newSelectedGearboxes = selectedGearboxes.includes(gearbox)
+      ? selectedGearboxes.filter(gb => gb !== gearbox)
+      : [...selectedGearboxes, gearbox];
+
+    setSelectedGearboxes(newSelectedGearboxes);
+    onGearboxFilterChange(newSelectedGearboxes); // Update the parent component's state
+  };
+  
+  const uniqueFuelTypes = getUniqueFuelTypes();
+
+  // Function to get unique gearboxes from the cars data
+  const getUniqueGearboxes = () => {
+    const allGearboxes = latestCar.map(car => car.gearbox); // Assuming gearbox is a string
+    const uniqueGearboxes = [...new Set(allGearboxes)].sort();
+    console.log('Unique Gearboxes:', uniqueGearboxes);
+    return uniqueGearboxes;
+  };
   
 
-  const uniqueFuelTypes = getUniqueFuelTypes();
+  const uniqueGearboxes = getUniqueGearboxes();
 
   const getRelevantModels = () => {
     // Get all cars that match the selected makes
@@ -160,7 +180,7 @@ return (
       {/* Fuel Type Section */}
       <div className="product-widget mb-20">
         <div className="check-box-item">
-          <h6 className="product-widget-title mb-20">Fuel Type</h6>
+          <h6 className="product-widget-title mb-20">Kraftstoff</h6>
           <div className="checkbox-container">
             <ul>
               {uniqueFuelTypes.map(fuelType => (
@@ -180,8 +200,33 @@ return (
           </div>
         </div>
       </div>
+      {/* Gearbox Section */}
+<div className="product-widget mb-20">
+  <div className="check-box-item">
+    <h6 className="product-widget-title mb-20">Getriebe</h6>
+    <div className="checkbox-container">
+      <ul>
+        {uniqueGearboxes.map(gearbox => (
+          <li key={gearbox}>
+            <label className="containerss">
+              <input
+                type="checkbox"
+                checked={selectedGearboxes.includes(gearbox)}
+                onChange={() => handleGearboxCheckboxChange(gearbox)}
+              />
+              <span className="checkmark" />
+              <span className="text">{gearbox}</span>
+            </label>
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
+</div>
+    </div>
+    
+  </div>
+  
 );
 
   
