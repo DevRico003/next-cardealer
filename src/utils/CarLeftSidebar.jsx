@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { latestCar } from '../data/data';
+import { latestCar } from '../data/mappedData';
 
 function CarLeftSidebar({ onMakeFilterChange, onModelFilterChange, onFuelTypeFilterChange, onGearboxFilterChange }) {
   const [searchTerm, setSearchTerm] = useState('');

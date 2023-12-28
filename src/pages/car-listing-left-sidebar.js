@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { latestCar } from '../data/data';
+import { latestCar } from '../data/mappedData';
 import MainLayout from '../layout/MainLayout';
 import CarLeftSidebar from '../utils/CarLeftSidebar';
 // import SelectComponent from '../utils/SelectComponent';

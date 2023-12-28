@@ -177,7 +177,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // Append the final mapped data to the file
+  // Write the final mapped data to the file
   fs.writeFile('mappedData.js', `export const latestCar = ${JSON.stringify(allMappedData, null, 2)};`, (err) => {
     if (err) {
       console.error('Error appending to file', err);
