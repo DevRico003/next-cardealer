@@ -115,6 +115,20 @@ const mapData = (data) => {
       }
     }
 
+    // Ensure features is defined from the correct location
+    const features = ad?.vehicle?.features;
+
+    // Map features with the utility function
+    const mappedFeatures = {};
+    for (const feature of features?.feature || []) {
+      const key = feature["@key"];
+      const value = getValue(feature["local-description"]) ?? getValue(feature);
+      // Only add the key if the value is not "Unknown"
+      if (value !== "Unknown") {
+        mappedFeatures[key] = value;
+      }
+    }
+
     return {
       id: parseInt(ad["@key"]),
       location: `${ad?.seller?.address?.city?.["@value"]}, ${ad?.seller?.address?.["country-code"]?.["@value"]}`,
@@ -134,7 +148,8 @@ const mapData = (data) => {
         slug: categoryUrl?.split('/').pop(),
       },
       // Add all other specifics mappings as needed
-      ...mappedSpecifics
+      ...mappedSpecifics,
+      ...mappedFeatures
     };
   });
 };
@@ -180,14 +195,14 @@ export default async function mobileHandler(req, res) {
   }
 
   // Write the final mapped data to the file
-  fs.writeFile('mappedData.js', `export const latestCar = ${JSON.stringify(allMappedData, null, 2)};`, (err) => {
+  fs.writeFile('src/data/mappedData.js', `export const latestCar = ${JSON.stringify(allMappedData, null, 2)};`, (err) => {
     if (err) {
       console.error('Error appending to file', err);
       res.status(500).json({ error: 'Failed to write to file' });
       return;
     }
 
-    console.log('All mapped data appended to mappedData.js');
+    console.log('All mapped data written to mappedData.js');
     res.status(200).send(allMappedData); // Send the total mapped data as response
   });
 }

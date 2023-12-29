@@ -115,7 +115,7 @@ function CarListingLeftSidebar() {
                             </h5>
                             <div className="price-location">
                               <div className="price">
-                                <strong>€{car.price.toLocaleString()}</strong>
+                                <strong>{car.price.toLocaleString()}€</strong>
                               </div>
                               <div className="location">
                                 <a href="#">
@@ -125,7 +125,7 @@ function CarListingLeftSidebar() {
                             </div>
                             <ul className="features">
                               <li>
-                                <img src="assets/img/home4/icon/miles.svg" alt="" /> {car.mileage}
+                                <img src="assets/img/home4/icon/miles.svg" alt="" /> {car.mileage && car.mileage.match(/\d+/g) ? parseInt(car.mileage.match(/\d+/g)[0]).toLocaleString('de-DE') + ' km' : ''}
                               </li>
                               <li>
                                 <img src="assets/img/home4/icon/fuel.svg" alt="" /> {car.fuelTypes}
