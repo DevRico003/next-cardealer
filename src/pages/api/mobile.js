@@ -141,7 +141,7 @@ const mapData = (data) => {
 
 
 // Next.js API route handler
-export default async function handler(req, res) {
+export default async function mobileHandler(req, res) {
   // let currentPage = Number(jsonResponse["search-result"]["current-page"])
   let maxPages = null;
   let allMappedData = []; // Store all mapped data across pages

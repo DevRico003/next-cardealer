@@ -39,7 +39,7 @@ const fetchImagesForCar = async (id) => {
 };
 
 // Next.js API route handler to fetch and save all images
-export default async function handler(req, res) {
+export default async function fetchCarImagesHandler(req, res) {
   try {
     let allCarImages = [];
     for (const car of latestCar) {
