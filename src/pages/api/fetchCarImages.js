@@ -1,10 +1,10 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
-import { latestCar } from '../../data/mappedData'; // Adjust the path as necessary
+import { latestCar } from '../../data/mappedData';
 
 // Function to fetch images for a single car
 const fetchImagesForCar = async (id) => {
-  const encodedCredentials = process.env.ENCODED_CREDENTIALS; // Ensure this is set in your environment
+  const encodedCredentials = process.env.ENCODED_CREDENTIALS;
   const url = `https://services.mobile.de/search-api/ad/${id}/images`;
 
   const headers = {
