@@ -38,6 +38,8 @@ const execute = async (queryParams) => {
       'Accept-Language': 'de', 
     };
 
+
+
     const response = await fetch(url.toString(), { method: 'GET', headers: headers });
 
     if (!response.ok) {
