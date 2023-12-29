@@ -291,6 +291,7 @@ function CarDeatilsPage() {
                     </ul>
                   </div>
                 </div>
+                
                 <div className="single-item mb-50" id="overview">
                   <div className="overview">
                     <div className="title mb-25">

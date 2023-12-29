@@ -36,6 +36,7 @@ export const latestCar = [
     "interior-color": "Schwarz",
     "interior-type": "Vollleder",
     "airbag": "Front-, Seiten- und weitere Airbags",
+    //
     "speed-control": "Abstandstempomat",
     "daytime-running-lamps": "LED-Tagfahrlicht",
     "headlight-type": "Laserlicht",
