@@ -1,0 +1,30 @@
+import sgMail from '@sendgrid/mail';
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+export default async function sendEmail(req, res) {
+  if (req.method === 'POST') {
+    const { name, email, phone, message } = req.body;
+    const content = {
+      to: 'info@carcenter-erding.de', // Replace with the email address you want to receive the contact messages
+      from: 'info@carcenter-erding.de', // Replace with your verified SendGrid sender email
+      subject: `Neue Nachricht von ${name}`,
+      text: message,
+      html: `<p>Du hast eine neue Kontaktanfrage von:</p>
+             <p><strong>Name:</strong> ${name}</p>
+             <p><strong>E-Mail:</strong> ${email}</p>
+             <p><strong>Telefon:</strong> ${phone}</p>
+             <p><strong>Nachricht:</strong> ${message}</p>`,
+    };
+
+    try {
+      await sgMail.send(content);
+      res.status(200).send({ message: 'Message sent successfully.' });
+    } catch (error) {
+      console.error('SendGrid mail error', error);
+      res.status(500).send({ error: 'Error sending message.' });
+    }
+  } else {
+    res.status(405).send({ error: 'Only POST requests allowed' });
+  }
+}
