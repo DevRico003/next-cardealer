@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import useCustomSelect from "../components/hooks/useCustomSelect";
 // import useCustomSelect from './useCustomSelect'; // Update the path based on your project structure
 
-const SelectComponent = ({ options, placeholder, open, customClass }) => {
+const SelectComponent = ({ options, placeholder, open, customClass, onChange }) => {
   const {
     isOpen,
     selectedOption,
@@ -37,6 +37,13 @@ const SelectComponent = ({ options, placeholder, open, customClass }) => {
     isOpen ? "open" : ""
   }`;
 
+  const handleSelect = (option) => {
+    selectOption(option);
+    if (onChange) {
+      onChange(option); // Rufen Sie die übergebene onChange-Funktion auf
+    }
+  };
+
   return (
     <div
       className={dropdownClassName}
@@ -58,6 +65,7 @@ const SelectComponent = ({ options, placeholder, open, customClass }) => {
             onClick={() => {
               selectOption(option);
               openDropdown(); // Open the next dropdown
+              handleSelect(option)
             }}
           >
             {option}

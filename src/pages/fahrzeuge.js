@@ -168,37 +168,10 @@ function CarListingLeftSidebar() {
                             ))}
                           </ul>
                         </div>
-                        <div className="next-prev-btn">
-                          <ul>
-                            <li>
-                              {/* Prev Button */}
-                            </li>
-                            <li>
-                              {/* Next Button */}
-                            </li>
-                          </ul>
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="toprated-used-cars mb-100">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="title">
-                <h4>Top Rated Used Cars For Sale</h4>
-              </div>
-              <div className="brand-list">
-                <ul>
-                  <li><Link legacyBehavior href="/single-brand-category"><a>Mitsubishi <span>(1,234)</span></a></Link></li>
-                  {/* Additional Brands */}
-                </ul>
               </div>
             </div>
           </div>

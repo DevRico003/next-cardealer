@@ -1,3 +1,7 @@
+import { latestCar } from '../data/mappedData';
+
+const ids = latestCar.map(car => car.id);
+
 export const BrandCategoryHome1 = [
   {
     id: 1,
@@ -61,8 +65,6 @@ export const BrandCategoryHome1 = [
     image: "assets/img/home1/icon/mazda-car.svg",
   },
 ];
-
-
 
 export const featuredCarData = [
   {
@@ -143,214 +145,20 @@ export const featuredCarData = [
     ],
     price: "$7,65600",
   },
-  {
-    id: 3,
-    productImgSrc: [
-      {
-        id: 1,
-        img: "assets/img/home5/feature-car-01.png",
-      },
-      {
-        id: 2,
-        img: "assets/img/home5/feature-car-02.png",
-      },
-      {
-        id: 3,
-        img: "assets/img/home5/feature-car-03.png",
-      },
-      {
-        id: 4,
-        img: "assets/img/home5/feature-car-04.png",
-      },
-    ],
-    location: "Panama City",
-    productName: "Mercedes-Benz Classs-2023",
-    slug: "mercedes-benz-classs-2023",
-    features: [
-      {
-        id: 1,
-        iconSrc: "assets/img/home4/icon/miles.svg",
-        text: "2500 miles",
-      },
-      { id: 2, iconSrc: "assets/img/home4/icon/menual.svg", text: "Automatic" },
-      { id: 3, iconSrc: "assets/img/home4/icon/fuel.svg", text: "Petrol" },
-      {
-        id: 4,
-        iconSrc: "assets/img/home4/icon/electric.svg",
-        text: "Electric",
-      },
-    ],
-    price: "$7,65600",
-  },
-  {
-    id: 4,
-    productImgSrc: [
-      {
-        id: 1,
-        img: "assets/img/home5/feature-car-01.png",
-      },
-      {
-        id: 2,
-        img: "assets/img/home5/feature-car-02.png",
-      },
-      {
-        id: 3,
-        img: "assets/img/home5/feature-car-03.png",
-      },
-      {
-        id: 4,
-        img: "assets/img/home5/feature-car-04.png",
-      },
-    ],
-    location: "Panama City",
-    productName: "Mercesdes-Benz Class-2023",
-    slug: "mercesdes-benz-class-2023",
-    features: [
-      {
-        id: 1,
-        iconSrc: "assets/img/home4/icon/miles.svg",
-        text: "2500 miles",
-      },
-      { id: 2, iconSrc: "assets/img/home4/icon/menual.svg", text: "Automatic" },
-      { id: 3, iconSrc: "assets/img/home4/icon/fuel.svg", text: "Petrol" },
-      {
-        id: 4,
-        iconSrc: "assets/img/home4/icon/electric.svg",
-        text: "Electric",
-      },
-    ],
-    price: "$7,65600",
-  },
-  {
-    id: 5,
-    productImgSrc: [
-      {
-        id: 1,
-        img: "assets/img/home5/feature-car-01.png",
-      },
-      {
-        id: 2,
-        img: "assets/img/home5/feature-car-02.png",
-      },
-      {
-        id: 3,
-        img: "assets/img/home5/feature-car-03.png",
-      },
-      {
-        id: 4,
-        img: "assets/img/home5/feature-car-04.png",
-      },
-    ],
-    location: "Panama City",
-    productName: "Merqcedes-Benz Class-2023",
-    slug: "merqcedes-benz-class-2023",
-    features: [
-      {
-        id: 1,
-        iconSrc: "assets/img/home4/icon/miles.svg",
-        text: "2500 miles",
-      },
-      { id: 2, iconSrc: "assets/img/home4/icon/menual.svg", text: "Automatic" },
-      { id: 3, iconSrc: "assets/img/home4/icon/fuel.svg", text: "Petrol" },
-      {
-        id: 4,
-        iconSrc: "assets/img/home4/icon/electric.svg",
-        text: "Electric",
-      },
-    ],
-    price: "$7,65600",
-  },
-  {
-    id: 6,
-    productImgSrc: [
-      {
-        id: 1,
-        img: "assets/img/home5/feature-car-01.png",
-      },
-      {
-        id: 2,
-        img: "assets/img/home5/feature-car-02.png",
-      },
-      {
-        id: 3,
-        img: "assets/img/home5/feature-car-03.png",
-      },
-      {
-        id: 4,
-        img: "assets/img/home5/feature-car-04.png",
-      },
-    ],
-    location: "Panama City",
-    productName: "Mercedes-Benz Class-2023z",
-    slug: "mercedes-benz-class-2023z",
-    features: [
-      {
-        id: 1,
-        iconSrc: "assets/img/home4/icon/miles.svg",
-        text: "2500 miles",
-      },
-      { id: 2, iconSrc: "assets/img/home4/icon/menual.svg", text: "Automatic" },
-      { id: 3, iconSrc: "assets/img/home4/icon/fuel.svg", text: "Petrol" },
-      {
-        id: 4,
-        iconSrc: "assets/img/home4/icon/electric.svg",
-        text: "Electric",
-      },
-    ],
-    price: "$7,65600",
-  },
-  {
-    id: 7,
-    productImgSrc: [
-      {
-        id: 1,
-        img: "assets/img/home5/feature-car-01.png",
-      },
-      {
-        id: 2,
-        img: "assets/img/home5/feature-car-02.png",
-      },
-      {
-        id: 3,
-        img: "assets/img/home5/feature-car-03.png",
-      },
-      {
-        id: 4,
-        img: "assets/img/home5/feature-car-04.png",
-      },
-    ],
-    location: "Panama City",
-    productName: "Mercedes-Benz C1lass-2023",
-    slug: "mercedes-benz-c1lass-2023",
-    features: [
-      {
-        id: 1,
-        iconSrc: "assets/img/home4/icon/miles.svg",
-        text: "2500 miles",
-      },
-      { id: 2, iconSrc: "assets/img/home4/icon/menual.svg", text: "Automatic" },
-      { id: 3, iconSrc: "assets/img/home4/icon/fuel.svg", text: "Petrol" },
-      {
-        id: 4,
-        iconSrc: "assets/img/home4/icon/electric.svg",
-        text: "Electric",
-      },
-    ],
-    price: "$7,65600",
-  },
 ];
+
 export const menuData = [
   {
     label: "Home",
     link: "#",
-    subMenu: [
-      { label: "Home 01", link: "index.html" },
-      { label: "Home 02", link: "index2.html" },
-      { label: "Home 03", link: "index3.html" },
-      { label: "Home 04", link: "index4.html" },
-      { label: "Home 05", link: "index5.html" },
-      { label: "Home 06", link: "index6.html" },
-    ],
+    // subMenu: [
+    //   { label: "Home 01", link: "index.html" },
+    //   { label: "Home 02", link: "index2.html" },
+    //   { label: "Home 03", link: "index3.html" },
+    //   { label: "Home 04", link: "index4.html" },
+    //   { label: "Home 05", link: "index5.html" },
+    //   { label: "Home 06", link: "index6.html" },
+    // ],
   },
   {
     label: "NEW CAR",
@@ -410,30 +218,30 @@ export const menuData = [
 export const breadcrumbData = [
   {
     id: 1,
-    path: "/contact",
-    sub_title: "Contact Ussssss",
-    title: "For Any Information",
+    path: "/kontakt",
+    sub_title: "Schnelle und einfache Kommunikation mit unserem Team.",
+    title: "Kontaktieren Sie unser Team",
     img_src: "assets/img/inner-page/inner-banner-img.png",
   },
   {
     id: 2,
-    path: "/about",
-    sub_title: "About Us",
-    title: "Our Brief History",
+    path: "/ueber-uns",
+    sub_title: "Unsere Verpflichtung zur Qualität und Zuverlässigkeit.",
+    title: "Unsere Mission",
     img_src: "assets/img/inner-page/inner-banner-img.png",
   },
   {
     id: 3,
-    path: "/car-deatils",
-    sub_title: "$34,637.00",
-    title: "Lamborghini Aventador",
-    img_src: "assets/img/inner-page/car-dt-banner-img.png",
+    path: `/[id]`,
+    sub_title: "Erfahren Sie, warum dieses Auto einzigartig ist.",
+    title: "Fahrzeugdetails",
+    img_src: "assets/img/inner-page/inner-banner-img.png",
   },
-  {
+{
     id: 4,
-    path: "/brand-category",
-    sub_title: "Brand Category",
-    title: "Find The Best Car",
+    path: "/fahrzeuge",
+    sub_title: "Entdecken Sie unsere Vielfalt an Fahrzeugen.",
+    title: "Alle Modelle auf einen Blick",
     img_src: "assets/img/inner-page/inner-banner-img.png",
   },
   {
@@ -445,9 +253,9 @@ export const breadcrumbData = [
   },
   {
     id: 6,
-    path: "/car-listing-left-sidebar",
-    sub_title: "Car Grid System",
-    title: "To Choose Dream Car",
+    path: "/brand-category",
+    sub_title: "Brand Category",
+    title: "Find The Best Car",
     img_src: "assets/img/inner-page/inner-banner-img.png",
   },
   {

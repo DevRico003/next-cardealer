@@ -26,25 +26,7 @@ function Breadcrumb() {
                   <div className="customar-review">
                     <ul>
                       <li>
-                        <a href="#">
-                          <div className="review-top">
-                            <div className="logo">
-                              <img src="assets/img/home1/icon/trstpilot-logo.svg" alt="" />
-                            </div>
-                            <div className="star">
-                              <img src="assets/img/home1/icon/trustpilot-star.svg" alt="" />
-                            </div>
-                          </div>
-                          <div className="content">
-                            <ul>
-                              <li>Trust Rating <span>5.0</span></li>
-                              <li><span>2348</span> Reviews</li>
-                            </ul>
-                          </div>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
+                        <a href="https://www.google.com/search?q=carcenter+erding&oq=carcenter+erding&gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg7MhIIARAuGCcYrwEYxwEYgAQYigUyBwgCEAAYgAQyCAgDEAAYFhgeMggIBBAAGBYYHjIGCAUQRRg8MgYIBhBFGDwyBggHEEUYPNIBCDI4NTZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8">
                           <div className="review-top">
                             <div className="logo">
                               <img src="assets/img/home1/icon/google-logo.svg" alt="" />
@@ -55,14 +37,14 @@ function Breadcrumb() {
                                 <li><i className="bi bi-star-fill" /></li>
                                 <li><i className="bi bi-star-fill" /></li>
                                 <li><i className="bi bi-star-fill" /></li>
-                                <li><i className="bi bi-star-half" /></li>
+                                <li><i className="bi bi-star-fill" /></li>
                               </ul>
                             </div>
                           </div>
                           <div className="content">
                             <ul>
-                              <li>Trust Rating <span>5.0</span></li>
-                              <li><span>2348</span> Reviews</li>
+                              <li>Trust Rating <span>4.8</span></li>
+                              <li><span>340+</span> Rezensionen</li>
                             </ul>
                           </div>
                         </a>
