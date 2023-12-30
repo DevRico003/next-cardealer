@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { latestCar } from '../data/mappedData';
 import MainLayout from '../layout/MainLayout';
 import CarLeftSidebar from '../utils/CarLeftSidebar';
-// import SelectComponent from '../utils/SelectComponent';
 import Link from 'next/link';
 
 function CarListingLeftSidebar() {
@@ -13,7 +12,7 @@ function CarListingLeftSidebar() {
   const [fuelTypeFilter, setFuelTypeFilter] = useState([]);
   const [gearboxFilter, setGearboxFilter] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     let filteredCars = latestCar;
@@ -162,12 +161,11 @@ function CarListingLeftSidebar() {
                       <div className="pagination-and-next-prev">
                         <div className="pagination">
                           <ul>
-                          {pageNumbers.map(pageNumber => (
-                              <li key={pageNumber} className={pageNumber === currentPage ? 'active' : ''}>
+                            {pageNumbers.map((pageNumber, index) => (
+                              <li key={pageNumber} className={`pagination-item ${pageNumber === currentPage ? 'active' : ''}`}>
                                 <a href="#" onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}>{pageNumber}</a>
                               </li>
                             ))}
-                            {/* Additional Pagination */}
                           </ul>
                         </div>
                         <div className="next-prev-btn">

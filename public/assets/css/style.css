@@ -21509,9 +21509,15 @@ button {
   padding: 0;
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 15px;
 }
+
+.pagination-item {
+  width: 12.5%; /* 100% / 8 items per row = 12.5% */
+}
+
 .pagination-and-next-prev .pagination ul li a {
   width: 34px;
   height: 34px;

@@ -6,8 +6,8 @@ export default async function sendEmail(req, res) {
   if (req.method === 'POST') {
     const { name, email, phone, message } = req.body;
     const content = {
-      to: 'info@carcenter-erding.de', // Replace with the email address you want to receive the contact messages
-      from: 'info@carcenter-erding.de', // Replace with your verified SendGrid sender email
+      to: 'info@carcenter-erding.de',
+      from: 'info@carcenter-erding.de',
       subject: `Neue Nachricht von ${name}`,
       text: message,
       html: `<p>Du hast eine neue Kontaktanfrage von:</p>
