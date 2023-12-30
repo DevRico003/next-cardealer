@@ -154,7 +154,6 @@ const mapData = (data) => {
   });
 };
 
-
 // Next.js API route handler
 export default async function mobileHandler(req, res) {
   // let currentPage = Number(jsonResponse["search-result"]["current-page"])
@@ -206,52 +205,3 @@ export default async function mobileHandler(req, res) {
     res.status(200).send(allMappedData); // Send the total mapped data as response
   });
 }
-
-
-/* // Mapping of the full api call
-const mapData = (data) => {
-  return data["search-result"]["ads"]["ad"].map((ad) => ({
-    id: ad["@key"],
-    url: ad["@url"],
-    creationDate: ad["creation-date"]["@value"],
-    modificationDate: ad["modification-date"]["@value"],
-    detailPageUrl: ad["detail-page"]["@url"],
-    vehicle: {
-      class: ad["vehicle"]["class"]["$"],
-      category: ad["vehicle"]["category"]["$"],
-      make: ad["vehicle"]["make"]["@key"],
-      model: ad["vehicle"]["model"]["$"],
-      modelDescription: ad["vehicle"]["model-description"]["@value"],
-      roadworthy: ad["vehicle"]["roadworthy"]["@value"] === "true",
-    },
-    specifics: {
-      mileage: ad["vehicle"]["specifics"]["mileage"]["@value"] + " km",
-      firstRegistration: ad["vehicle"]["specifics"]["first-registration"]["@value"],
-      fuelType: ad["vehicle"]["specifics"]["fuel"]["$"],
-      power: ad["vehicle"]["specifics"]["power"]["@value"] + " HP",
-      gearbox: ad["vehicle"]["specifics"]["gearbox"]["$"],
-      numSeats: ad["vehicle"]["specifics"]["num-seats"]["@value"],
-      cubicCapacity: ad["vehicle"]["specifics"]["cubic-capacity"]["@value"] + " cc",
-      condition: ad["vehicle"]["specifics"]["condition"]["$"],
-    },
-    price: {
-      amount: ad["price"]["consumer-price-amount"]["@value"],
-      currency: ad["price"]["@currency"],
-      vatRate: ad["price"]["vat-rate"]["@value"],
-    },
-    seller: {
-      id: ad["seller"]["@key"],
-      type: ad["seller"]["type"]["@value"],
-      location: `${ad["seller"]["address"]["city"]["@value"]}, ${ad["seller"]["address"]["country-code"]["@value"]}`,
-      coordinates: {
-        latitude: ad["seller"]["coordinates"]["latitude"],
-        longitude: ad["seller"]["coordinates"]["longitude"],
-      },
-    },
-    images: ad["images"]["image"]["representation"].map((rep) => rep["@url"]),
-    highlights: ad["highlights"] ? ad["highlights"]["highlight"] : null,
-    description: ad["description"],
-  }));
-};
-
-*/

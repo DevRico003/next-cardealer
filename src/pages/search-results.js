@@ -27,9 +27,11 @@ function SearchResults() {
               }
               const data = await response.json();
               setResults(data || []);
+              setCars(data || []);
             } catch (error) {
               console.error('Fetching search results failed:', error);
               setResults([]);
+              setCars([]);
             }
           }
       
@@ -65,7 +67,7 @@ function SearchResults() {
     }
   
     setCars(filteredCars);
-  }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter]);
+  }, [results, makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, currentPage]);
 
   const handlePageChange = (newPage) => { // New function to handle page changes
     setCurrentPage(newPage);

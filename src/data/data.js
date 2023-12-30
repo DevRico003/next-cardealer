@@ -246,9 +246,9 @@ export const breadcrumbData = [
   },
   {
     id: 5,
-    path: "/single-brand-category",
-    sub_title: "Suzuki Brand",
-    title: "To Choose Suzuki Car",
+    path: "/search-results",
+    sub_title: "Ihre Marke, Ihr Budget, Ihr Traumwagen",
+    title: "Traumauto entdecken",
     img_src: "assets/img/inner-page/inner-banner-img.png",
   },
   {
