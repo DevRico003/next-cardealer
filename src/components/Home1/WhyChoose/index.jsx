@@ -2,27 +2,81 @@ import React from 'react'
 import CountUp from 'react-countup';
 function index() {
   return (
-    <div className="why-choose-area pt-90 pb-90 mb-100">
+    <div className="why-choose-area pt-90 pb-90 mb-100" id="services">
       <div className="container">
         <div className="row mb-60 wow fadeInUp" data-wow-delay="200ms">
           <div className="col-lg-12 d-flex justify-content-center">
             <div className="section-title1 text-center">
-              <span>Best Car Agency</span>
-              <h2>Why Only Choose Drivco</h2>
+              <span>IHR WEG ZU FAHRVERGNÜGEN UND SICHERHEIT</span>
+              <h2>Unsere Services</h2>
             </div>
           </div>
         </div>
         <div className="row mb-50 g-4 justify-content-center">
+        <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="200ms">
+            <div className="choose-card">
+              <div className="choose-top">
+                <div className="choose-icon">
+                  <img src="assets/img/home1/icon/av-car.svg" alt="" />
+                </div>
+                <h5><span>Vielfältiges</span> Fahrzeugangebot</h5>
+              </div>
+              <p>Wir bieten eine breite Palette an Modellen, die Qualität und Leistung vereinen.</p>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="200ms">
+            <div className="choose-card">
+              <div className="choose-top">
+                <div className="choose-icon">
+                  <img src="assets/img/home1/icon/happy-customar.svg" alt="" />
+                </div>
+                <h5><span>Individuelle</span> Persönliche Beratung</h5>
+              </div>
+              <p>Unsere Experten beraten Sie mit Leidenschaft und Engagement. Wir stehen für ehrliche und individuelle Angebote.</p>
+            </div>
+          </div>
           <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="200ms">
             <div className="choose-card">
               <div className="choose-top">
                 <div className="choose-icon">
                   <img src="assets/img/home1/icon/affordable.svg" alt="" />
                 </div>
-                <h5><span>Affordable</span> Price</h5>
+                <h5><span>Kundensienst</span> mit Priorität</h5>
               </div>
-              <p>An affordable price for a luxury car may be significantly higher than an affordable price for
-                a budget car...</p>
+              <p>Wir beheben umgehend alle Mängel an Fahrzeugen, die Sie bei uns erwerben. Ihre Zufriedenheit ist unser Ziel.</p>
+            </div>
+          </div>
+        <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="200ms">
+            <div className="choose-card">
+              <div className="choose-top">
+                <div className="choose-icon">
+                  <img src="assets/img/home1/icon/use-car.svg" alt="" />
+                </div>
+                <h5><span>Bundesweite</span> Fahrzeugüberführung</h5>
+              </div>
+              <p>Wir liefern Ihr neues Fahrzeug direkt zu Ihnen – zuverlässig und überall in Deutschland.</p>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="200ms">
+            <div className="choose-card">
+              <div className="choose-top">
+                <div className="choose-icon">
+                  <img src="assets/img/home1/icon/affordable.svg" alt="" />
+                </div>
+                <h5><span>Schnelle</span> Finanzierungszusage</h5>
+              </div>
+              <p>Profitieren Sie von unserer schnellen Online-Bonitätsprüfung und sichern Sie sich Ihre Finanzierung in Minuten.</p>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="200ms">
+            <div className="choose-card">
+              <div className="choose-top">
+                <div className="choose-icon">
+                  <img src="assets/img/home1/icon/warranty.svg" alt="" />
+                </div>
+                <h5><span>Innovative</span> Versicherungslösungen</h5>
+              </div>
+              <p>Mit unseren maßgeschneiderten Versicherungsoptionen sind Sie immer bestens geschützt.</p>
             </div>
           </div>
           <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="300ms">
@@ -31,22 +85,20 @@ function index() {
                 <div className="choose-icon">
                   <img src="assets/img/home1/icon/guarantee.svg" alt="" />
                 </div>
-                <h5>Money Back <span>Guarantee</span></h5>
+                <h5>Langzeit <span>Garantie</span></h5>
               </div>
-              <p>Some may offer a full refund with no questions asked, others may require the customer to
-                provide...</p>
+              <p>Unsere Langzeit-Garantie gewährleistet Ihnen langanhaltende Freude am Fahren.</p>
             </div>
           </div>
           <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="400ms">
             <div className="choose-card">
               <div className="choose-top">
                 <div className="choose-icon">
-                  <img src="assets/img/home1/icon/warranty.svg" alt="" />
+                  <img src="assets/img/home1/icon/affordable.svg" alt="" />
                 </div>
-                <h5>8 Month <span>Warranty</span></h5>
+                <h5>Flexible <span>Leasingoptionen</span></h5>
               </div>
-              <p>During this 8-month period, if the product fails to function properly due to a defect or
-                malfunction...</p>
+              <p>Erleben Sie die Freiheit, mit unseren attraktiven Leasingoptionen für Gebrauchtwagen zu fahren.</p>
             </div>
           </div>
         </div>
@@ -59,24 +111,10 @@ function index() {
                 </div>
                 <div className="content">
                   <div className="number">
-                    <h5 className="counter"><CountUp delay={2} end={600} /></h5>
-                    <span>K+</span>
+                    <h5 className="counter"><CountUp delay={2} end={150} /></h5>
+                    <span>+</span>
                   </div>
-                  <p>Car Available</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-sm-4 col-sm-6 divider d-flex justify-content-sm-center wow fadeInUp" data-wow-delay="300ms">
-              <div className="single-activiti">
-                <div className="icon">
-                  <img src="assets/img/home1/icon/sold-car.svg" alt="" />
-                </div>
-                <div className="content">
-                  <div className="number">
-                    <h5 className="counter"><CountUp delay={2} end={400} /></h5>
-                    <span>K+</span>
-                  </div>
-                  <p>Car Sold</p>
+                  <p>Verfügbare Fahrzeuge</p>
                 </div>
               </div>
             </div>
@@ -87,10 +125,10 @@ function index() {
                 </div>
                 <div className="content">
                   <div className="number">
-                    <h5 className="counter"><CountUp delay={2} end={200} /></h5>
-                    <span>K+</span>
+                    <h5 className="counter"><CountUp delay={2} end={20} /></h5>
+                    <span>+ Jahre</span>
                   </div>
-                  <p>Used Cars</p>
+                  <p>Erfahrung</p>
                 </div>
               </div>
             </div>
@@ -101,23 +139,12 @@ function index() {
                 </div>
                 <div className="content">
                   <div className="number">
-                    <h5 className="counter"><CountUp delay={2} end={80} /></h5>
+                    <h5 className="counter"><CountUp delay={2} end={98} /></h5>
                     <span>%</span>
                   </div>
-                  <p>Customer Satisfaction</p>
+                  <p>Kundenzufriedenheit</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="row wow fadeInUp" data-wow-delay="200ms">
-          <div className="col-lg-12 d-flex justify-content-center">
-            <div className="trustpilot-review">
-              <strong>Excellent!</strong>
-              <img src="assets/img/home1/icon/trustpilot-star2.svg" alt="" />
-              <p>5.0 Rating out of <strong>5.0</strong> based on <a href="#"><strong>&nbsp;245354&nbsp;</strong>
-                  reviews</a></p>
-              <img src="assets/img/home1/icon/trustpilot-logo.svg" alt="" />
             </div>
           </div>
         </div>

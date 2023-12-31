@@ -99,11 +99,11 @@ const handleBudgetChange = (event) => {
                       <div className="tab-pane fade show active" id="budget1" role="tabpanel" aria-labelledby="budget1-tab">
                         <div className="form-inner mb-25">
                           <label>Budget eingeben*</label>
-                          <input type="number" className="form-control" placeholder="300000" onChange={handleBudgetChange} />
+                          <input type="number" className="form-control" placeholder="Nur Zahlen eingeben" onChange={handleBudgetChange} />
                         </div>
                         <div className="form-inner mb-25">
                           <label>Marke auswählen*</label>
-                          <SelectComponent customClass="select" options={options} placeholder="Ferrari" onChange={handleMakeChange} />
+                          <SelectComponent customClass="select" options={options} placeholder="Auswählen" onChange={handleMakeChange} />
                         </div>
                         <div className="form-inner last">
                         <button className="primary-btn1" type="submit" onClick={handleSearch}>Suchen</button>

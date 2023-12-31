@@ -9,7 +9,7 @@ function MainLayout({ children }) {
   return (
     <>
       <Topbar />
-      <Modals />
+      {/* <Modals /> */}
       <Header />
       <Breadcrumb />
       {children}

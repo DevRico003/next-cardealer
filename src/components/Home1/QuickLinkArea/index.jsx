@@ -5,7 +5,7 @@ function index() {
     <div className="quick-link-area">
       <ul className="wow fadeInUp" data-wow-delay="200ms">
         <li>
-          <Link legacyBehavior  href="/car-listing-left-sidebar">
+          <Link legacyBehavior  href="/#marken">
             <a>
             <svg width={30} height={30} viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
               <g clipPath="url(#clip0_611_1863)">
@@ -20,12 +20,12 @@ function index() {
                 <path d="M20.2148 12.2949C20.5387 12.2949 20.8012 12.0324 20.8012 11.7085C20.8012 11.3847 20.5387 11.1221 20.2148 11.1221C19.891 11.1221 19.6284 11.3847 19.6284 11.7085C19.6284 12.0324 19.891 12.2949 20.2148 12.2949Z" />
               </g>
             </svg>
-            Browse Used a Car
+            Suche nach Marken
             </a>
           </Link>
         </li>
         <li>
-          <Link legacyBehavior  href="/car-listing-left-sidebar">
+          <Link legacyBehavior  href="/#services">
             <a>
             <svg width={30} height={30} viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
               <g clipPath="url(#clip0_611_1886)">
@@ -36,7 +36,7 @@ function index() {
                 <path d="M12.4167 15.91H13.2974V16.7906H12.4167V15.91ZM18.5811 12.9745H19.4618V13.8552H18.5811V12.9745Z" />
               </g>
             </svg>
-            Auction Car
+            Services
             </a>
           </Link>
         </li>

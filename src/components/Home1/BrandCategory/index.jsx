@@ -4,7 +4,7 @@ import { BrandCategoryHome1 } from "../../../data/data";
 
 function index() {
   return (
-    <div className="brand-category-area pt-100 mb-100">
+    <div className="brand-category-area pt-100 mb-100" id="marken">
       <div className="container">
         <div className="row row-cols-xl-6 row-cols-lg-5 row-cols-md-3 row-cols-sm-3 row-cols-2 g-4 justify-content-center mb-40">
           {BrandCategoryHome1.map((item) => {
@@ -29,7 +29,7 @@ function index() {
         <div className="row wow fadeInUp" data-wow-delay="300ms">
           <div className="col-lg-12">
             <div className="view-btn-area">
-              <p>Fahrzeuge </p>
+              <p>Alle Fahrzeuge </p>
               <Link legacyBehavior href="/fahrzeuge">
                 <a className="view-btn">ansehen</a>
               </Link>

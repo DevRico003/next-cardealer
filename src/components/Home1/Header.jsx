@@ -83,7 +83,7 @@ function Header() {
         </div>
         <ul className="menu-list">
         <li className={`${currentRoute === "/" ? "active" : ""}`}>
-          <a href="#" className={`${state.activeMenu === "home-one" ? "active" : ""}`}>Home</a>
+          <a href="/" className={`${state.activeMenu === "home-one" ? "active" : ""}`}>Home</a>
         </li>
         <li>
           <a href="fahrzeuge">Fahrzeuge</a>

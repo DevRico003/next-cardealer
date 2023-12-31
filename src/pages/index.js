@@ -18,22 +18,22 @@ import Blog from "../components/Home1/Blog/index";
 export default function Home() {
   return (
     <>
-      <Modals />
+      {/* <Modals /> */}
       <Topbar />
       <Header />
       <Banner />
       <QuickLinkArea />
       <BrandCategory />
-      <MostSearchedUsersCar />
-      <RecentLaunchedCar />
+      {/* <MostSearchedUsersCar /> */}
+      {/* <RecentLaunchedCar /> */}
       <WhyChoose />
       <UpcomingCars />
-      <RecomandationCar />
-      <TopRateUsedCars />
-      <CompareCar />
-      <ShopCard />
-      <Testimonial />
-      <Blog />
+      {/* <RecomandationCar /> */}
+      {/* <TopRateUsedCars /> */}
+      {/* <CompareCar /> */}
+      {/* <ShopCard /> */}
+      {/* <Testimonial /> */}
+      {/* <Blog /> */}
       <Footer1 />
     </>
   );
