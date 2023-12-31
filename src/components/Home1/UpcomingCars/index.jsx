@@ -50,7 +50,7 @@ function index() {
         }
     },[])
   return (
-    <div className="upcoming-car-area mb-100">
+    <div className="upcoming-car-area mb-100" id="fahrzeuge-slider">
         <div className="container">
         <div className="row mb-60 wow fadeInUp" data-wow-delay="200ms">
             <div className="col-lg-12">
