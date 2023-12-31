@@ -16,14 +16,6 @@ function Header1() {
         <ul className="menu-list">
           <li className="menu-item-has-children active">
             <a href="#" className="drop-down">Home</a><i className="bi bi-plus dropdown-icon" />
-            <ul className="sub-menu">
-              <li><Link legacyBehavior href="/"><a>Home 01</a></Link></li>
-              <li><Link legacyBehavior href="/index2"><a>Home 02</a></Link></li>
-              <li><Link legacyBehavior href="/index3"><a>Home 03</a></Link></li>
-              <li><Link legacyBehavior href="/index4"><a>Home 04</a></Link></li>
-              <li><Link legacyBehavior href="/index5"><a>Home 05</a></Link></li>
-              <li><Link legacyBehavior href="/index6"><a>Home 06</a></Link></li>
-            </ul>
           </li>
           <li className="position-inherit">
                 <a href="#" className="drop-down">NEW CAR</a>

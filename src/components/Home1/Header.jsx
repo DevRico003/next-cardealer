@@ -82,145 +82,36 @@ function Header() {
           </div>
         </div>
         <ul className="menu-list">
-        <li className={`menu-item-has-children ${ currentRoute === "/" ? "active" : ""}`}>
-            <a href="#" className={`drop-down ${state.activeMenu === "home-one" ? "active" : ""}`}>Home</a><i  onClick={() => toggleMenu("home-one")} className={`bi bi-${state.activeMenu === "home-one" ?"dash":"plus"} dropdown-icon`} />
-            <ul className={`sub-menu ${ state.activeMenu === "home-one" ? "d-block" : ""}`}>
-              <li><Link legacyBehavior href="/"><a className="active">Home 01</a></Link></li>
-              <li><Link legacyBehavior href="/index2"><a>Home 02</a></Link></li>
-              <li><Link legacyBehavior href="/index3"><a>Home 03</a></Link></li>
-              <li><Link legacyBehavior href="/index4"><a>Home 04</a></Link></li>
-              <li><Link legacyBehavior href="/index5"><a>Home 05</a></Link></li>
-              <li><Link legacyBehavior href="/index6"><a>Home 06</a></Link></li>
+        <li className={`${currentRoute === "/" ? "active" : ""}`}>
+          <a href="#" className={`${state.activeMenu === "home-one" ? "active" : ""}`}>Home</a>
+        </li>
+        <li>
+          <a href="fahrzeuge">Fahrzeuge</a>
+        </li>
+        <li>
+          <a href="ueber-uns">Über uns</a>
+        </li>
+        <li className="menu-item-has-children">
+          <a href="#" className="drop-down">Finanzierung</a><i onClick={() => toggleMenu("pages")} className={`bi bi-${state.activeMenu === "pages" ?"dash":"plus"} dropdown-icon`} />
+          <ul className={`sub-menu ${ state.activeMenu === "pages" ? "d-block" : ""}`}>
+              <li><Link legacyBehavior href="/#"><a>Online-Calculator</a></Link></li>
+              <li><Link legacyBehavior href="/#"><a>Bontätsprüfung</a></Link></li>
             </ul>
           </li>
-          <li className="position-inherit">
-            <a href="#" className="drop-down">NEW CAR</a>
-            <i onClick={() => toggleMenu("new-car")} className={`bi bi-${state.activeMenu === "new-car" ?"dash":"plus"} dropdown-icon`} />
-            <div className={`mega-menu ${state.activeMenu === "new-car"?"d-block":""}`}>
-              <ul className="menu-row">
-                <li className="menu-single-item">
-                  <h6>Browse by Brand</h6>
-                  <ul>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Merchedes Benz (10) <img src="assets/img/menu-icon/merchedes.svg" alt="" /></a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Volkswagen (10) <img src="assets/img/menu-icon/volkswagen.svg" alt="" /></a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Ferrari (10) <img src="assets/img/menu-icon/ferrari.svg" alt="" /></a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Mazda (10) <img src="assets/img/menu-icon/mazda.svg" alt="" /></a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Mitsubishi (10) <img src="assets/img/menu-icon/mitsubishi.svg" alt="" /></a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Lamborghini (10) <img src="assets/img/menu-icon/lamborghini.svg" alt="" /></a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Tesla (10) <img src="assets/img/menu-icon/tesla.svg" alt="" /></a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Toyota (10) <img src="assets/img/menu-icon/toyota.svg" alt="" /></a></Link></li>
-                    <div className="explore-more-btn">
-                      <Link legacyBehavior href="/brand-category"><a>Explore More <i className="bi bi-arrow-right" /></a></Link>
-                    </div>
-                  </ul>
-                </li>
-                <li className="menu-single-item">
-                  <h6>Popular Models</h6>
-                  <ul>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Toyota Camry</a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Ford Mustang</a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Volkswagen Golf</a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Mercedes C-Class</a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Audi A4</a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Jeep Wrangler</a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Mazda CX-5</a></Link></li>
-                    <li><Link legacyBehavior href="/single-brand-category"><a>Chevrolet Corvette</a></Link></li>
-                    <div className="explore-more-btn">
-                      <Link legacyBehavior href="/brand-category"><a>Explore More <i className="bi bi-arrow-right" /></a></Link>
-                    </div>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-        </li>
-      <li className="position-inherit">
-        <a href="#" className="drop-down">USED CAR</a>
-        <i onClick={() => toggleMenu("use-car")} className={`bi bi-${state.activeMenu === "use-car" ?"dash":"plus"} dropdown-icon`} />
-        <div className={`mega-menu ${state.activeMenu === "use-car"?"d-block":""}`}>
-          <ul className="menu-row">
-            <li className="menu-single-item">
-              <h6>Popular Models</h6>
-              <ul>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Toyota Camry</a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Ford Mustang</a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Volkswagen Golf</a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Mercedes C-Class</a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Audi A4</a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Jeep Wrangler</a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Mazda CX-5</a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Chevrolet Corvette</a></Link></li>
-                <div className="explore-more-btn">
-                  <Link legacyBehavior href="/brand-category"><a>Explore More <i className="bi bi-arrow-right" /></a></Link>
-                </div>
-              </ul>
-            </li>
-            <li className="menu-single-item">
-              <h6>Popular Cities </h6>
-              <ul>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Panama City (10)<img src="assets/img/menu-icon/panama.svg" alt="" /></a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Sydne City (10)<img src="assets/img/menu-icon/sydne.svg" alt="" /></a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Melbourne City (10)<img src="assets/img/menu-icon/melbourne.svg" alt="" /></a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>New Delhi (10)<img src="assets/img/menu-icon/delhi.svg" alt="" /></a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>New York (10)<img src="assets/img/menu-icon/newYork.svg" alt="" /></a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>Menchester City (10)<img src="assets/img/menu-icon/menchester.svg" alt="" /></a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>City of Greece (10)<img src="assets/img/menu-icon/greece.svg" alt="" /></a></Link></li>
-                <li><Link legacyBehavior href="/single-brand-category"><a>City of Abu-dabi (10)<img src="assets/img/menu-icon/abudabi.svg" alt="" /></a></Link></li>
-                <div className="explore-more-btn">
-                  <Link legacyBehavior href="/brand-category"><a>Explore More <i className="bi bi-arrow-right" /></a></Link>
-                </div>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </li>
           <li className="menu-item-has-children">
-          <a href="#" className="drop-down">Pages</a><i onClick={() => toggleMenu("pages")} className={`bi bi-${state.activeMenu === "pages" ?"dash":"plus"} dropdown-icon`} />
+          <a href="#" className="drop-down">Garantie</a><i onClick={() => toggleMenu("pages")} className={`bi bi-${state.activeMenu === "pages" ?"dash":"plus"} dropdown-icon`} />
           <ul className={`sub-menu ${ state.activeMenu === "pages" ? "d-block" : ""}`}>
-              <li><Link legacyBehavior href="/about"><a>About Us</a></Link></li>
-              <li><Link legacyBehavior href="/brand-category"><a>Brand Category</a></Link></li>
-              <li><Link legacyBehavior href="/single-brand-category"><a>Single Brand Category</a></Link></li>
-              <li>
-                <a href="#">Car Listing System</a>
-                <i className="d-lg-flex d-none bi bi-chevron-right dropdown-icon" />
-                <i  onClick={() => toggleSubMenu("submenu1")} className={`d-lg-none d-flex bi bi-${state.activeSubMenu ==="submenu1"?"dash":"plus"} dropdown-icon `} />
-                <ul className={`sub-menu ${state.activeSubMenu === "submenu1" ? "d-block" : ""}`}>
-                  <li><Link legacyBehavior href="/car-listing-left-sidebar"><a>Car Listing Left Sidebar</a></Link></li>
-                  <li><Link legacyBehavior href="/car-listing-right-sidebar"><a>Car Listing Right Sidebar</a></Link></li>
-                  <li><Link legacyBehavior href="/car-listing-no-sidebar"><a>Car Listing No Sidebar</a></Link></li>
-                </ul>
-              </li>
-              <li><Link legacyBehavior href="/special-offer"><a>Special Offer</a></Link></li>
-              <li><Link legacyBehavior href="/car-deatils"><a>Car Details </a></Link></li>
-              <li><Link legacyBehavior href="/car-auction-details"><a>Car Auction Details</a></Link></li>
-              <li><Link legacyBehavior href="/compare"><a> Compare Car</a></Link></li>
-              <li>
-                <a href="#">Shop</a>
-                <i className="d-lg-flex d-none bi bi-chevron-right dropdown-icon" />
-                <i  onClick={() => toggleSubMenu("shop")} className={`d-lg-none d-flex bi bi-${state.activeSubMenu ==="shop"?"dash":"plus"} dropdown-icon `} />
-                <ul className={`sub-menu ${state.activeSubMenu === "shop" ? "d-block" : ""}`}>
-                  <li><Link legacyBehavior href="/shop"><a>Shop</a></Link></li>
-                  <li><Link legacyBehavior href="/product-details"><a>Product Details</a></Link></li>
-                  <li><Link legacyBehavior href="/checkout"><a>Checkout</a></Link></li> 
-                </ul>
-              </li>
-              <li>
-                <a href="#">Blog</a>
-                <i className="d-lg-flex d-none bi bi-chevron-right dropdown-icon" />
-                <i  onClick={() => toggleSubMenu("blog")} className={`d-lg-none d-flex bi bi-${state.activeSubMenu ==="blog"?"dash":"plus"} dropdown-icon `} />
-                <ul className={`sub-menu ${state.activeSubMenu === "blog" ? "d-block" : ""}`}>
-                  <li><Link legacyBehavior href="/blog-standard"><a>Blog Standard</a></Link></li>
-                  <li><Link legacyBehavior href="/blog-details"><a>Blog  Details</a></Link></li> 
-                </ul>
-              </li>
-              <li><Link legacyBehavior href="/faq"><a>FAQ's</a></Link></li>
-              <li><Link legacyBehavior href="/error"><a>Error</a></Link></li>
-              <li><Link legacyBehavior href="/customer-review"><a>Customer Review </a></Link></li>
-              <li><Link legacyBehavior href="/return-enchange"><a>Return &amp; Exchange</a></Link></li>
+              <li><Link legacyBehavior href="/#"><a>Langzeitschutz</a></Link></li>
+              <li><Link legacyBehavior href="/#"><a>Gebrauchtwagen-Garantie</a></Link></li>
             </ul>
           </li>
           <li>
-            <Link legacyBehavior href="/contact"><a  className="drop-down">CONTACT US</a></Link>
-          </li>
+          <a href="#">Auszeichnungen</a>
+        </li>
+        <li>
+          <a href="kontakt">Kontakt</a>
+        </li>
+
         </ul>
         <div className="hotline-area d-lg-none d-flex">
           <div className="icon">
