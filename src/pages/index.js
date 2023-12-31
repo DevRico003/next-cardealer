@@ -6,6 +6,7 @@ import Topbar from "../components/Home1/Topbar";
 import BrandCategory from "../components/Home1/BrandCategory";
 import WhyChoose from "../components/Home1/WhyChoose/index";
 import UpcomingCars from "../components/Home1/UpcomingCars/index";
+import CookieConsent, { Cookies } from "react-cookie-consent";
 export default function Home() {
   return (
     <>
@@ -17,6 +18,31 @@ export default function Home() {
       <WhyChoose />
       <UpcomingCars />
       <Footer1 />
+      <CookieConsent
+         location="bottom"
+         buttonText="Akzeptieren"
+         declineButtonText="Ablehnen"
+         cookieName="carcenter-erding-cookies"
+         style={{ background: "#2B373B" }}
+         buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
+         expires={150}
+       
+  onAccept={(acceptedByScrolling) => {
+    if (acceptedByScrolling) {
+      // triggered if user scrolls past threshold
+      alert("Cookies wurden durch Benutzer Scrolling akzeptiert");
+    } else {
+      alert("Cookies wurden durch klicken akzeptiert");
+    }
+  }}
+  enableDeclineButton
+  onDecline={() => {
+    alert("Cookies wurden abgelehnt");
+  }}>
+  Wir verwenden Cookies, um unsere Website und unseren Service zu optimieren und zu verbessern. 
+       Cookies sind kleine Textdateien, die von Websites verwendet werden können, 
+       um die Benutzererfahrung effizienter zu gestalten.
+</CookieConsent>
     </>
   );
 }
