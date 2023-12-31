@@ -124,7 +124,16 @@ function Header() {
             </svg>
           </div>
           <div className="content">
-          <span>Telefonkontakt!</span>
+          <span>E-Mail</span>
+            <h6><a href="mailto:info@carcenter-erding.de">info(at)carcenter-erding.de</a></h6>
+          </div>
+        </div>
+        <div className="hotline-area d-lg-none d-flex">
+          <div className="icon">
+            <img src="assets/img/home1/icon/hotline-icon.svg" alt="" />
+          </div>
+          <div className="content">
+          <span>Telefon</span>
             <h6><a href="tel:+4981222280164">+49 81 22 22 80 164</a></h6>
           </div>
         </div>
@@ -133,17 +142,29 @@ function Header() {
         {/* Button trigger modal */}
         <div className="hotline-area d-xl-flex d-none">
           <div className="icon">
+            <img src="assets/img/home1/icon/email-icon.svg" alt="" />
+          </div>
+          <div className="content">
+            <span>E-Mail</span>
+            <h6><a href="mailto:info@carcenter.de">info(at)carcenter-erding.de</a></h6>
+          </div>
+        </div>
+                {/* Button trigger modal */}
+                <div className="hotline-area d-xl-flex d-none">
+          <div className="icon">
             <img src="assets/img/home1/icon/hotline-icon.svg" alt="" />
           </div>
           <div className="content">
-            <span>Telefonkontakt!</span>
+            <span>Telefon</span>
             <h6><a href="tel:+4981222280164">+49 81 22 22 80 164</a></h6>
           </div>
         </div>
         <div className={`sidebar-button mobile-menu-btn ${state.isSidebarOpen ? "active" : "" }`} onClick={toggleSidebar}>
           <span />
         </div>
+
       </div>
+      
     </header>
   )
 }
