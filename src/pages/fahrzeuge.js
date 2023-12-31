@@ -1,4 +1,6 @@
+'use client'
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { latestCar } from '../data/mappedData';
 import MainLayout from '../layout/MainLayout';
 import CarLeftSidebar from '../utils/CarLeftSidebar';
@@ -6,6 +8,8 @@ import Link from 'next/link';
 
 function CarListingLeftSidebar() {
   const [activeClass, setActiveClass] = useState('grid-group-wrapper');
+  const router = useRouter();
+  const { query } = router;
   const [cars, setCars] = useState([]);
   const [makeFilter, setMakeFilter] = useState('');
   const [modelFilter, setModelFilter] = useState([]);
@@ -13,6 +17,13 @@ function CarListingLeftSidebar() {
   const [gearboxFilter, setGearboxFilter] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  useEffect(() => {
+    // Set the make filter from the URL query if present
+    if (query.make) {
+      setMakeFilter(query.make);
+    }
+  }, [query.make]);
 
   useEffect(() => {
     let filteredCars = latestCar;
@@ -42,7 +53,7 @@ function CarListingLeftSidebar() {
     }
   
     setCars(filteredCars);
-  }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter]);
+  }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, query.make]);
 
   const handlePageChange = (newPage) => { // New function to handle page changes
     setCurrentPage(newPage);

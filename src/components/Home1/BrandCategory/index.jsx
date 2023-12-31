@@ -9,9 +9,10 @@ function index() {
         <div className="row row-cols-xl-6 row-cols-lg-5 row-cols-md-3 row-cols-sm-3 row-cols-2 g-4 justify-content-center mb-40">
           {BrandCategoryHome1.map((item) => {
             const { id, image, icons } = item;
+            const make = icons.split('/')[4].split('.svg')[0];
             return (
               <div className="col wow fadeInUp" data-wow-delay="200ms">
-                <Link legacyBehavior href="/single-brand-category" key={id}>
+                <Link legacyBehavior href={{ pathname: '/fahrzeuge', query: { make } }} key={id}>
                   <a className="single-category1">
                     <div className="brand-icon">
                       <img src={icons} alt="" />
@@ -28,9 +29,9 @@ function index() {
         <div className="row wow fadeInUp" data-wow-delay="300ms">
           <div className="col-lg-12">
             <div className="view-btn-area">
-              <p>There has 30+ Brand Category Available </p>
-              <Link legacyBehavior href="/brand-category">
-                <a className="view-btn">View More</a>
+              <p>Fahrzeuge </p>
+              <Link legacyBehavior href="/fahrzeuge">
+                <a className="view-btn">ansehen</a>
               </Link>
             </div>
           </div>
