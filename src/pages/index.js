@@ -23,22 +23,11 @@ export default function Home() {
          buttonText="Akzeptieren"
          declineButtonText="Ablehnen"
          cookieName="carcenter-erding-cookies"
-         style={{ background: "#2B373B" }}
+         style={{ background: "#58DA93" }}
          buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
          expires={150}
-       
-  onAccept={(acceptedByScrolling) => {
-    if (acceptedByScrolling) {
-      // triggered if user scrolls past threshold
-      alert("Cookies wurden durch Benutzer Scrolling akzeptiert");
-    } else {
-      alert("Cookies wurden durch klicken akzeptiert");
-    }
-  }}
-  enableDeclineButton
-  onDecline={() => {
-    alert("Cookies wurden abgelehnt");
-  }}>
+         enableDeclineButton
+ >
   Wir verwenden Cookies, um unsere Website und unseren Service zu optimieren und zu verbessern. 
        Cookies sind kleine Textdateien, die von Websites verwendet werden können, 
        um die Benutzererfahrung effizienter zu gestalten.

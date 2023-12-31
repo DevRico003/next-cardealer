@@ -47,16 +47,16 @@ export const breadcrumbData = [
   },
   {
     id: 6,
-    path: "/brand-category",
-    sub_title: "Brand Category",
-    title: "Find The Best Car",
+    path: "/impressum",
+    sub_title: "Rechtliches",
+    title: "Impressum",
     img_src: "assets/img/inner-page/inner-banner-img.png",
   },
   {
     id: 7,
-    path: "/car-listing-right-sidebar",
-    sub_title: "Car Grid System",
-    title: "To Choose Dream Car",
+    path: "/datenschutzerklaerung",
+    sub_title: "Rechtliches",
+    title: "Datenschutzerklärung",
     img_src: "assets/img/inner-page/inner-banner-img.png",
   },
   {

@@ -7,6 +7,7 @@ export default async function sendEmail(req, res) {
     const { name, email, phone, message } = req.body;
     const content = {
       to: 'info@carcenter-erding.de',
+      // to: 'palermo003@gmail.com',
       from: 'info@carcenter-erding.de',
       subject: `Neue Nachricht von ${name}`,
       text: message,
