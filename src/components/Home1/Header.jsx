@@ -105,9 +105,6 @@ function Header() {
               <li><Link legacyBehavior href="/#"><a>Gebrauchtwagen-Garantie</a></Link></li>
             </ul>
           </li>
-          <li>
-          <a href="#">Auszeichnungen</a>
-        </li>
         <li>
           <a href="kontakt">Kontakt</a>
         </li>
