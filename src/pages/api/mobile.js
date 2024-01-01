@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
-import fs from 'fs'
+import { Car } from '../../models/Car';
+import connectToDatabase from '../../utils/connectToDatabase';
 
 let instance = null;
 let error = null;
@@ -156,52 +157,57 @@ const mapData = (data) => {
 
 // Next.js API route handler
 export default async function mobileHandler(req, res) {
-  // let currentPage = Number(jsonResponse["search-result"]["current-page"])
+
   let maxPages = null;
   let allMappedData = []; // Store all mapped data across pages
 
-  while (maxPages === null || currentPage <= maxPages) {
-    console.log(`Fetching data for page: ${currentPage}`); // Log the current page being fetched
+  try {
+    // Verbinden Sie mit der Datenbank
+    await connectToDatabase();
 
-    const queryParams = {
-      ...req.query, // Spread any additional query parameters
-      "customerNumber": '726774',
-      "page.number": currentPage // Use the updated currentPage value
-    };
-    
-    const result = await execute(queryParams); // Pass the updated query parameters
+    // Löschen aller vorhandenen Dokumente in der Car-Kollektion
+    await Car.deleteMany({});
 
-    if (result) {
-      const jsonResponse = result;
-      maxPages = Number(jsonResponse["search-result"]["max-pages"]);
+    while (maxPages === null || currentPage <= maxPages) {
+      console.log(`Fetching data for page: ${currentPage}`); // Log the current page being fetched
+
+      const queryParams = {
+        ...req.query, // Spread any additional query parameters
+        "customerNumber": '726774',
+        "page.number": currentPage // Use the updated currentPage value
+      };
       
-      const mappedData = mapData(result); // Map the data for the current page
-      allMappedData = allMappedData.concat(mappedData); // Append the mapped data for the current page to the total
+      const result = await execute(queryParams); // Pass the updated query parameters
 
-      if (currentPage <= maxPages) {
-        currentPage++; // Increment to fetch the next page in the next iteration
-       } else {
-        currentPage = 1;
-       } 
-      
-      console.log(`Moving to next page: ${currentPage}`); // Log the next page to be fetched
-    } else {
-      const currentError = getError();
-      console.error('Error fetching data for page:', currentPage, currentError);
-      res.status(500).json({ error: `Failed at page ${currentPage}: ${currentError}` });
-      return;
+      if (result) {
+        const jsonResponse = result;
+        maxPages = Number(jsonResponse["search-result"]["max-pages"]);
+        
+        const mappedData = mapData(jsonResponse); // Map the data for the current page
+        allMappedData = allMappedData.concat(mappedData); // Append the mapped data for the current page to the total
+
+        // Speichern jedes Car-Objekts in MongoDB
+        await Car.insertMany(mappedData);
+
+        if (currentPage <= maxPages) {
+          currentPage++; // Increment to fetch the next page in the next iteration
+        } else {
+          currentPage = 1; // Reset to the first page for the next run
+        } 
+        
+        console.log(`Moving to next page: ${currentPage}`); // Log the next page to be fetched
+      } else {
+        const currentError = getError(); // Stellen Sie sicher, dass Sie eine Methode haben, um Fehler zu erhalten.
+        console.error('Error fetching data for page:', currentPage, currentError);
+        res.status(500).json({ error: `Failed at page ${currentPage}: ${currentError}` });
+        return;
+      }
     }
-  }
 
-  // Write the final mapped data to the file
-  fs.writeFile('src/data/mappedData.js', `export const latestCar = ${JSON.stringify(allMappedData, null, 2)};`, (err) => {
-    if (err) {
-      console.error('Error appending to file', err);
-      res.status(500).json({ error: 'Failed to write to file' });
-      return;
-    }
-
-    console.log('All mapped data written to mappedData.js');
+    console.log('All old data deleted and new data successfully saved to MongoDB');
     res.status(200).send(allMappedData); // Send the total mapped data as response
-  });
+  } catch (error) {
+    console.error('Error during processing:', error);
+    res.status(500).json({ error: error.message || 'Unknown error occurred' });
+  }
 }

@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
-import fs from 'fs';
-import { latestCar } from '../../data/mappedData';
+import connectToDatabase from '../../utils/connectToDatabase';
+import { Car } from '../../models/Car';
+import { CarImages } from '../../models/CarImages';
 
 // Function to fetch images for a single car
 const fetchImagesForCar = async (id) => {
@@ -40,20 +41,26 @@ const fetchImagesForCar = async (id) => {
 
 // Next.js API route handler to fetch and save all images
 export default async function fetchCarImagesHandler(req, res) {
+  await connectToDatabase();
+
   try {
+    const cars = await Car.find({});
+    console.log('Cars fetched from database:', cars);
+
     let allCarImages = [];
-    for (const car of latestCar) {
+    for (const car of cars) {
+
       const carImages = await fetchImagesForCar(car.id);
       allCarImages.push(carImages);
+
+      // Save to MongoDB using CarImages model
+      await CarImages.updateOne({ id: car.id }, { $set: { images: carImages.images } }, { upsert: true });
     }
 
-    // Save to imageData.js
-    fs.writeFileSync('src/data/imageData.js', `export const latestCarImages = ${JSON.stringify(allCarImages, null, 2)};`);
-
-    console.log('All images saved to imageData.js with their respective car IDs');
-    res.status(200).json({ message: 'Images successfully fetched and saved', count: allCarImages.length });
+    console.log('All images saved to MongoDB with their respective car IDs');
+    res.status(200).json({ message: 'Images successfully fetched and saved in MongoDB', count: allCarImages.length });
   } catch (error) {
     console.error('Error during image fetching and saving:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: `Internal Server Error: ${error.message}` });
   }
 }

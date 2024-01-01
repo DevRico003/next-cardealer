@@ -1,13 +1,33 @@
-import { latestCar } from '../data/mappedData';
+export async function fetchBrandCategoryData() {
+  try {
+    const response = await fetch('/api/cars'); // Replace with the actual API endpoint
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Fetching cars failed:', error);
+    return [];
+  }
+}
 
-const ids = latestCar.map(car => car.id);
-const uniqueMakes = [...new Set(latestCar.map(car => car.make))];
+export async function BrandCategoryHome1() {
+  try {
+    const carsData = await fetchBrandCategoryData();
+    const uniqueMakes = [...new Set(carsData.map(car => car.make))];
+    const brandCategoryData = uniqueMakes.map((make, index) => ({
+      id: index + 1,
+      icons: `assets/img/home1/icon/${make}.svg`,
+      image: "assets/img/home1/icon/bmw-car.svg",
+    }));
+    return brandCategoryData;
+  } catch (error) {
+    console.error('Error generating BrandCategoryHome1:', error);
+    return [];
+  }
+}
 
-export const BrandCategoryHome1 = uniqueMakes.map((make, index) => ({
-  id: index + 1,
-  icons: `assets/img/home1/icon/${make}.svg`,
-  image: "assets/img/home1/icon/bmw-car.svg",
-}));
 
 export const breadcrumbData = [
   {

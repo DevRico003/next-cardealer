@@ -1,46 +1,70 @@
-import React, { useState } from 'react';
+'use client'
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { latestCar } from '../../../data/mappedData';
+import { latestCar } from '../../../data/mappedDataa';
 import SelectComponent from '@/src/utils/SelectComponent'
 
 function index() {
-  const options = [...new Set(latestCar.map(car => car.make))];
+  const [cars, setCars] = useState([]);
   const [selectedMake, setSelectedMake] = useState('');
   const [selectedBudget, setSelectedBudget] = useState('');
   const [searchId, setSearchId] = useState(null);
   const router = useRouter();
 
-const handleSearch = async () => {
-  const filteredCars = latestCar.filter(car => {
-    const carPrice = typeof car.price === 'string' ? parseInt(car.price.replace(/\D/g, ''), 10) : car.price;
-    return car.make === selectedMake && carPrice <= selectedBudget;
-  });
-  const response = await fetch('/api/saveSearchResults', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(filteredCars),
-  });
+  // Fetch car data from your API when the component mounts
+  useEffect(() => {
+    const fetchCars = async () => {
+      const response = await fetch('/api/cars');
+      const data = await response.json();
+      console.log(data)
+      setCars(data);
+    };
+    fetchCars();
+  }, []); // Empty dependency array means this effect runs once on mount
 
-  const data = await response.json();
-  setSearchId(data.id);
-  console.log('Saved file ID:', data.id);
-  // Weiterleiten zum search-results mit der ID als Query-Parameter
-  router.push(`/search-results?id=${data.id}`);
-}
-
+  const handleSearch = async () => {
+    const filteredCars = cars.filter(car => {
+      const carPrice = typeof car.price === 'string' ? parseInt(car.price.replace(/\D/g, ''), 10) : car.price;
+      return car.make === selectedMake && carPrice <= selectedBudget;
+    });
   
-// Aktualisieren Sie den Zustand, wenn die Marke ausgewählt wird
-const handleMakeChange = (value) => {
-  setSelectedMake(value);
-  console.log("Ausgewählte Marke:", value); // Zum Debuggen
-};
+    console.log('Zu sendende gefilterte Autos:', filteredCars);
+  
+    try {
+      const response = await fetch('/api/saveSearchResults', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(filteredCars),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP-Error: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Server-Antwort:', data);
+      setSearchId(data.id);
+      router.push(`/search-results?id=${data.id}`);
+    } catch (error) {
+      console.error('Fehler bei der Anfrage:', error);
+    }
+  };
+  
 
-// Aktualisieren Sie den Zustand, wenn das Budget eingegeben wird
-const handleBudgetChange = (event) => {
-  setSelectedBudget(event.target.value);
-};
+  const handleMakeChange = (value) => {
+    setSelectedMake(value);
+    console.log("Ausgewählte Marke geändert:", value);
+  };
+
+  const handleBudgetChange = (event) => {
+    setSelectedBudget(event.target.value);
+    console.log("Budget geändert:", event.target.value);
+  };
+
+  const options = [...new Set(cars.map(car => car.make))];
+  console.log('Verfügbare Optionen:', options);
 
   return (
     <>

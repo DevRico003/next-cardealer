@@ -1,27 +1,21 @@
-import fs from 'fs';
-import path from 'path';
+import connectToDatabase from '../../utils/connectToDatabase';
+import { Temp } from '../../models/Temp'; 
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const directory = path.join(process.cwd(), 'temp');
+    try {
+      // Verbinden Sie mit der Datenbank
+      await connectToDatabase();
 
-    fs.readdir(directory, (err, files) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ message: 'Server error' });
-      }
+      // Löschen aller Dokumente in der Temp-Kollektion
+      // Das ist äquivalent zum Leeren des temp-Verzeichnisses
+      await Temp.deleteMany({});
 
-      for (const file of files) {
-        fs.unlink(path.join(directory, file), err => {
-          if (err) {
-            console.error(err);
-            return res.status(500).json({ message: 'Server error' });
-          }
-        });
-      }
-
-      res.status(200).json({ message: 'Temp folder emptied' });
-    });
+      res.status(200).json({ message: 'All documents in Temp collection deleted' });
+    } catch (error) {
+      console.error('Failed to delete documents:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
   } else {
     res.status(405).json({ message: 'Method not allowed' });
   }

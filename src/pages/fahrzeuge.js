@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { latestCar } from '../data/mappedData';
 import MainLayout from '../layout/MainLayout';
 import CarLeftSidebar from '../utils/CarLeftSidebar';
 import Link from 'next/link';
@@ -10,7 +9,8 @@ function CarListingLeftSidebar() {
   const [activeClass, setActiveClass] = useState('grid-group-wrapper');
   const router = useRouter();
   const { query } = router;
-  const [cars, setCars] = useState([]);
+  const [allCars, setAllCars] = useState([]);  // Store all cars from the API
+  const [displayedCars, setDisplayedCars] = useState([]);  // Cars to be displayed after filtering
   const [makeFilter, setMakeFilter] = useState('');
   const [modelFilter, setModelFilter] = useState([]);
   const [fuelTypeFilter, setFuelTypeFilter] = useState([]);
@@ -18,83 +18,78 @@ function CarListingLeftSidebar() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  // Fetch cars from the API
   useEffect(() => {
-    // Set the make filter from the URL query if present
+    const fetchData = async () => {
+      const response = await fetch('/api/cars');
+      if(response.ok) {
+        const data = await response.json();
+        setAllCars(data);  // Set the full list of cars
+        setDisplayedCars(data);  // Initially, displayedCars is the same as the full list
+      } else {
+        console.error('Failed to fetch cars:', response.statusText);
+      }
+    };
+
+    fetchData().catch(console.error);
+  }, []);
+
+  // Update makeFilter based on query
+  useEffect(() => {
     if (query.make) {
       setMakeFilter(query.make);
     }
   }, [query.make]);
 
+  // Apply filters whenever a filter changes or the full list of cars changes
   useEffect(() => {
-    let filteredCars = latestCar;
-  
-    // Filter cars that match any of the selected makes
+    let filteredCars = allCars; // Start with the full list of cars
+
     if (makeFilter.length > 0) {
       filteredCars = filteredCars.filter(car => makeFilter.includes(car.make));
     }
-  
-    // Further filter cars that match any of the selected models
     if (modelFilter.length > 0) {
       filteredCars = filteredCars.filter(car => modelFilter.includes(car.carModel));
     }
-
-    // Filter cars that match any of the selected fuel types
     if (fuelTypeFilter.length > 0) {
-      filteredCars = filteredCars.filter(car =>
+      filteredCars = filteredCars.filter(car => 
         car.fuelTypes.some(fuelType => fuelTypeFilter.includes(fuelType.trim()))
       );
     }
-    
-    // Filter cars that match any of the selected gearboxes
     if (gearboxFilter.length > 0) {
-      filteredCars = filteredCars.filter(car =>
-        gearboxFilter.includes(car.gearbox) // Make sure 'gearbox' matches your data
-      );
+      filteredCars = filteredCars.filter(car => gearboxFilter.includes(car.gearbox));
     }
-  
-    setCars(filteredCars);
-  }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, query.make]);
 
-  const handlePageChange = (newPage) => { // New function to handle page changes
-    setCurrentPage(newPage);
-  };
 
-    // Function to update the modelFilter state
-  const onModelFilterChange = (newModelFilter) => {
-    setModelFilter(newModelFilter);
-  };
+    
+    setDisplayedCars(filteredCars);  // Update displayed cars based on filters and pagination
+  }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, allCars, currentPage, query.make]);
 
-  // Function to update the fuelTypeFilter state
-  const onFuelTypeFilterChange = (newFuelTypeFilter) => {
-    setFuelTypeFilter(newFuelTypeFilter);
-  };
+  // Handlers for updating filters and pagination
+  const onMakeFilterChange = (newMakeFilter) => { setMakeFilter(newMakeFilter); };
+  const onModelFilterChange = (newModelFilter) => { setModelFilter(newModelFilter); };
+  const onFuelTypeFilterChange = (newFuelTypeFilter) => { setFuelTypeFilter(newFuelTypeFilter); };
+  const onGearboxFilterChange = (newGearboxFilter) => { setGearboxFilter(newGearboxFilter); };
+  const handlePageChange = (newPage) => { setCurrentPage(newPage); };
 
-  // Function to update the gearboxFilter state
-  const onGearboxFilterChange = (newGearboxFilter) => {
-    setGearboxFilter(newGearboxFilter);
-  };
+  const totalPages = Math.ceil(allCars.length / itemsPerPage); // Calculate total pages based on all cars
 
-  const totalPages = Math.ceil(cars.length / itemsPerPage); // Total number of pages
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1); // Array of page numbers
-  const displayedCars = cars.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); // New line to slice cars array
-
-  console.log(cars)
   return (
     <MainLayout>
       <div className="product-page pt-100 mb-100">
         <div className="container">
           <div className="row g-xl-4 gy-5">
             <CarLeftSidebar 
-                    onMakeFilterChange={setMakeFilter}
+                    onMakeFilterChange={onMakeFilterChange}
                     onModelFilterChange={onModelFilterChange}
-                    onFuelTypeFilterChange={setFuelTypeFilter} 
+                    onFuelTypeFilterChange={onFuelTypeFilterChange} 
                     onGearboxFilterChange={onGearboxFilterChange}
             />
             <div className="col-xl-8 order-xl-2 order-1">
               <div className="row mb-40">
                 <div className="col-lg-12">
                   <div className="show-item-and-filter">
-                    <p>Es gibt <strong>{cars.length}</strong> verfügbare Autos.</p>
+                    <p>Es gibt <strong>{displayedCars.length}</strong> verfügbare Autos.</p>
                   </div>
                 </div>
               </div>
@@ -172,10 +167,12 @@ function CarListingLeftSidebar() {
                       <div className="pagination-and-next-prev">
                         <div className="pagination">
                           <ul>
-                            {pageNumbers.map((pageNumber, index) => (
-                              <li key={pageNumber} className={`pagination-item ${pageNumber === currentPage ? 'active' : ''}`}>
-                                <a href="#" onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}>{pageNumber}</a>
-                              </li>
+                          {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
+                  <li key={pageNumber} className={`pagination-item ${pageNumber === currentPage ? 'active' : ''}`}>
+                    <a href="#" onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}>
+                      {pageNumber}
+                    </a>
+                  </li>
                             ))}
                           </ul>
                         </div>

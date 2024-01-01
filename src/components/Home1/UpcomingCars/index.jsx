@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import SwiperCore, { Autoplay, EffectFade, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
-import { latestCar } from '../../../data/mappedData';
+import { latestCar } from '../../../data/mappedDataa';
 SwiperCore.use([ Autoplay, EffectFade, Navigation]);
 
 function index() {

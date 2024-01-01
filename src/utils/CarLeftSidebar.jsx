@@ -1,20 +1,41 @@
-import React, { useState } from 'react';
-import { latestCar } from '../data/mappedData';
+import React, { useState, useEffect, useMemo } from 'react';
 
 function CarLeftSidebar({ onMakeFilterChange, onModelFilterChange, onFuelTypeFilterChange, onGearboxFilterChange }) {
+  const [cars, setCars] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMakes, setSelectedMakes] = useState([]);
   const [selectedModels, setSelectedModels] = useState([]);
   const [fuelTypeFilter, setFuelTypeFilter] = useState([]);
   const [selectedGearboxes, setSelectedGearboxes] = useState([]);
   
-  const getUniqueValues = (key) => {
-    const allValues = latestCar.map((car) => car[key]);
-    return [...new Set(allValues)].sort();
-  };
+  useEffect(() => {
+    console.log('Fetching cars...');
+    const fetchCars = async () => {
+      try {
+        const response = await fetch('/api/cars');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Cars fetched:', data);
+        setCars(data);
+      } catch (error) {
+        console.error("Failed to fetch cars:", error);
+      }
+    };
   
-  const makes = getUniqueValues('make');
+    fetchCars();
+  }, []);
+  
+  // useMemo to calculate unique values only when 'cars' changes
+  const getUniqueValues = useMemo(() => {
+    return (key) => {
+      const allValues = cars.map((car) => car[key]);
+      return [...new Set(allValues)].sort();
+    };
+  }, [cars]); 
 
+  // Handler functions for changes in filters
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -22,23 +43,24 @@ function CarLeftSidebar({ onMakeFilterChange, onModelFilterChange, onFuelTypeFil
   const handleCheckboxChange = (make) => {
     let newSelectedMakes;
     if (selectedMakes.includes(make)) {
+      // If the make is already selected, remove it from the array
       newSelectedMakes = selectedMakes.filter(selectedMake => selectedMake !== make);
     } else {
+      // If the make isn't selected, add it to the array
       newSelectedMakes = [...selectedMakes, make];
     }
   
-    setSelectedMakes(newSelectedMakes);
+    setSelectedMakes(newSelectedMakes); // Update the state
   
-    // If no makes are selected, reset the models filter
+    // Reset models if no makes are selected
     if (newSelectedMakes.length === 0) {
       setSelectedModels([]);
-      onModelFilterChange([]); // Assuming you have a function to update the parent component's model filter
+      onModelFilterChange([]);
     } else {
-      // Optionally, filter the selected models based on the new makes selection
-      // This ensures that only models corresponding to the selected makes are kept
+      // Filter the selected models based on the new selected makes
       const newSelectedModels = selectedModels.filter(model =>
         newSelectedMakes.some(selectedMake =>
-          latestCar.some(car => car.make === selectedMake && car.model === model)
+          cars.some(car => car.make === selectedMake && car.model === model)
         )
       );
   
@@ -46,8 +68,9 @@ function CarLeftSidebar({ onMakeFilterChange, onModelFilterChange, onFuelTypeFil
       onModelFilterChange(newSelectedModels);
     }
   
-    onMakeFilterChange(newSelectedMakes); // Update the make filter in the parent component
+    onMakeFilterChange(newSelectedMakes); // Notify parent component of the change
   };
+  
 
   const handleModelCheckboxChange = (model) => {
     const newSelectedModels = selectedModels.includes(model)
@@ -55,66 +78,50 @@ function CarLeftSidebar({ onMakeFilterChange, onModelFilterChange, onFuelTypeFil
       : [...selectedModels, model];
 
     setSelectedModels(newSelectedModels);
-    onModelFilterChange(newSelectedModels); // This should now work as expected
+    onModelFilterChange(newSelectedModels);
   };
 
-  // Function to handle changes in fuel type selection
   const handleFuelTypeCheckboxChange = (fuelType) => {
     const newSelectedFuelTypes = fuelTypeFilter.includes(fuelType)
       ? fuelTypeFilter.filter(ft => ft !== fuelType)
       : [...fuelTypeFilter, fuelType];
   
-    setFuelTypeFilter(newSelectedFuelTypes); // Update the local state
-    onFuelTypeFilterChange(newSelectedFuelTypes); // Propagate changes to the parent component
+    setFuelTypeFilter(newSelectedFuelTypes);
+    onFuelTypeFilterChange(newSelectedFuelTypes);
   };
 
-  // Function to get unique fuel types from the cars data
-  const getUniqueFuelTypes = () => {
-    // Map through each car, then through each car's fuelTypes, and flatten the results
-    const allFuelTypes = latestCar.flatMap(car => 
-      Array.isArray(car.fuelTypes) 
-        ? car.fuelTypes.map(ft => ft.trim()) 
-        : []
+  // useMemo to calculate unique fuel types only when 'cars' changes
+  const uniqueFuelTypes = useMemo(() => {
+    const allFuelTypes = cars.flatMap(car => 
+      Array.isArray(car.fuelTypes) ? car.fuelTypes.map(ft => ft.trim()) : []
     );
-    const uniqueFuelTypes = [...new Set(allFuelTypes)];  // Use a Set to filter out duplicates
-    // Capitalize the first letter of each fuel type for display purposes
-    return uniqueFuelTypes.map(fuelType => fuelType.charAt(0) + fuelType.slice(1)).sort();
-  };
-  
-  // Handler for gearbox changes
+    return [...new Set(allFuelTypes)].map(fuelType => fuelType.charAt(0).toUpperCase() + fuelType.slice(1)).sort();
+  }, [cars]);
+
+  // useMemo to calculate unique gearboxes only when 'cars' changes
+  const uniqueGearboxes = useMemo(() => {
+    const allGearboxes = cars.map(car => car.gearbox);
+    return [...new Set(allGearboxes)].sort();
+  }, [cars]);
+
+  // useMemo to get relevant models based on selected makes
+  const relevantModels = useMemo(() => {
+    const relevantCars = cars.filter(car => selectedMakes.includes(car.make));
+    const models = relevantCars.map(car => car.carModel);
+    return [...new Set(models)].sort();
+  }, [cars, selectedMakes]);
+
   const handleGearboxCheckboxChange = (gearbox) => {
     const newSelectedGearboxes = selectedGearboxes.includes(gearbox)
       ? selectedGearboxes.filter(gb => gb !== gearbox)
       : [...selectedGearboxes, gearbox];
 
     setSelectedGearboxes(newSelectedGearboxes);
-    onGearboxFilterChange(newSelectedGearboxes); // Update the parent component's state
+    onGearboxFilterChange(newSelectedGearboxes);
   };
-  
-  const uniqueFuelTypes = getUniqueFuelTypes();
 
-  // Function to get unique gearboxes from the cars data
-  const getUniqueGearboxes = () => {
-    const allGearboxes = latestCar.map(car => car.gearbox); // Assuming gearbox is a string
-    const uniqueGearboxes = [...new Set(allGearboxes)].sort();
-    console.log('Unique Gearboxes:', uniqueGearboxes);
-    return uniqueGearboxes;
-  };
-  
-
-  const uniqueGearboxes = getUniqueGearboxes();
-
-  const getRelevantModels = () => {
-    // Get all cars that match the selected makes
-    const relevantCars = latestCar.filter(car => selectedMakes.includes(car.make));
-  
-    // Extract unique models from these cars
-    const models = relevantCars.map(car => car.carModel);
-    return [...new Set(models)].sort();
-  };
-  
-  const relevantModels = getRelevantModels();
-  
+ // Calculate `makes` using `getUniqueValues`
+ const makes = getUniqueValues('make');
 
 return (
   <div className="col-xl-4 order-xl-1 order-2">

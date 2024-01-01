@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { BrandCategoryHome1 } from "../../../data/data";
 
 function index() {
+  // State to store BrandCategoryHome1 data
+  const [BrandCategoryHome1, setBrandCategoryHome1] = useState([]);
+
+  useEffect(() => {
+    // Fetch data and generate BrandCategoryHome1
+    const fetchBrandCategoryData = async () => {
+      try {
+        const response = await fetch('/api/cars'); // Replace with the actual API endpoint
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        // Process data to generate BrandCategoryHome1
+        const uniqueMakes = [...new Set(data.map(car => car.make))];
+        const brandCategoryData = uniqueMakes.map((make, index) => ({
+          id: index + 1,
+          icons: `assets/img/home1/icon/${make}.svg`,
+          image: "assets/img/home1/icon/bmw-car.svg",
+        }));
+
+        // Set BrandCategoryHome1 in state
+        setBrandCategoryHome1(brandCategoryData);
+      } catch (error) {
+        console.error('Fetching cars failed:', error);
+        setBrandCategoryHome1([]); // Set an empty array if an error occurs
+      }
+    };
+
+    // Call the fetchBrandCategoryData function
+    fetchBrandCategoryData();
+  }, []);
+
   return (
     <div className="brand-category-area pt-100 mb-100" id="marken">
       <div className="container">
@@ -11,8 +43,8 @@ function index() {
             const { id, image, icons } = item;
             const make = icons.split('/')[4].split('.svg')[0];
             return (
-              <div className="col wow fadeInUp" data-wow-delay="200ms">
-                <Link legacyBehavior href={{ pathname: '/fahrzeuge', query: { make } }} key={id}>
+              <div className="col wow fadeInUp" data-wow-delay="200ms" key={id}>
+                <Link legacyBehavior href={{ pathname: '/fahrzeuge', query: { make } }}>
                   <a className="single-category1">
                     <div className="brand-icon">
                       <img src={icons} alt="" />

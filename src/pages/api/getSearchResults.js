@@ -1,16 +1,23 @@
-import fs from 'fs';
-import path from 'path';
+import connectToDatabase from '../../utils/connectToDatabase';
+import { Temp } from '../../models/Temp';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  await connectToDatabase();
+
   if (req.method === 'GET') {
     const { id } = req.query;
-    const filePath = path.join(process.cwd(), 'temp', `${id}.json`);
 
-    if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, 'utf-8');
-      res.status(200).json(JSON.parse(data));
-    } else {
-      res.status(404).json({ message: 'File not found' });
+    try {
+      const document = await Temp.findOne({ _id: id }).exec(); // Achte auf _id statt id
+
+      if (document) {
+        res.status(200).json(document);
+      } else {
+        res.status(404).json({ message: 'Document not found' });
+      }
+    } catch (error) {
+      console.error('Error fetching document:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   } else {
     res.status(405).end(); // Method Not Allowed
