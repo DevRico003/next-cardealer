@@ -14,14 +14,14 @@ function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(true);
 
   const handlePreloaderClose = () => {
-    setLoading(false);
+    setLoading(false); 
   };
 
   useEffect(() => {
     // Simulate loading for 3 seconds (adjust as needed)
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 0);
   }, []);
   useEffect(() => {
     import("../../public/assets/js/bootstrap.min.js");
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }) {
               sizes="20x20"
             />
           </Head>
-          <Preloader onClose={handlePreloaderClose} />
+          {/* <Preloader onClose={handlePreloaderClose} /> */}
         </>
       ) : (
         <>
