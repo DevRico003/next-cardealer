@@ -1,54 +1,75 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import SwiperCore, { Autoplay, EffectFade, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
-import { latestCar } from '../../../data/mappedDataa';
-SwiperCore.use([ Autoplay, EffectFade, Navigation]);
+SwiperCore.use([Autoplay, EffectFade, Navigation]);
 
 function index() {
-    const slideSetting = useMemo(()=>{
-        return {
-            slidesPerView: 3,
-            speed: 1500,
-            spaceBetween: 25,
-            autoplay: {
-            	delay: 2500, // Autoplay duration in milliseconds
-            	disableOnInteraction: false,
-            },
-            navigation: {
-                nextEl: ".next-2",
-                prevEl: ".prev-2",
-            },
-    
-            breakpoints: {
-                280: {
-                    slidesPerView: 1,
-                },
-                386: {
-                    slidesPerView: 1,
-                },
-                576: {
-                    slidesPerView: 1,
-                    spaceBetween: 15,
-                },
-                768: {
-                    slidesPerView: 2,
-                    spaceBetween: 15,
-                },
-                992: {
-                    slidesPerView: 3,
-                    spaceBetween: 15,
-                },
-                1200: {
-                    slidesPerView: 3,
-                    spaceBetween: 24,
-                },
-                1400: {
-                    slidesPerView: 3
-                },
-            }
+  const slideSetting = {
+    slidesPerView: 3,
+    speed: 1500,
+    spaceBetween: 25,
+    autoplay: {
+      delay: 2500, // Autoplay duration in milliseconds
+      disableOnInteraction: false,
+    },
+    navigation: {
+      nextEl: ".next-2",
+      prevEl: ".prev-2",
+    },
+
+    breakpoints: {
+      280: {
+        slidesPerView: 1,
+      },
+      386: {
+        slidesPerView: 1,
+      },
+      576: {
+        slidesPerView: 1,
+        spaceBetween: 15,
+      },
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 15,
+      },
+      992: {
+        slidesPerView: 3,
+        spaceBetween: 15,
+      },
+      1200: {
+        slidesPerView: 3,
+        spaceBetween: 24,
+      },
+      1400: {
+        slidesPerView: 3,
+      },
+    },
+  };
+
+  // State to store car data from the API
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from the API endpoint
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/cars'); // Replace with the actual API endpoint
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-    },[])
+        const data = await response.json();
+        setCars(data);
+      } catch (error) {
+        console.error('Fetching cars failed:', error);
+        setCars([]); // Set an empty array if an error occurs
+      }
+    };
+
+    // Call the fetchData function
+    fetchData();
+  }, []);
+
   return (
     <div className="upcoming-car-area mb-100" id="fahrzeuge-slider">
         <div className="container">
@@ -65,7 +86,7 @@ function index() {
             <Swiper {...slideSetting} className="swiper upcoming-car-slider">
                 <div className="swiper-wrapper">
                 
-                {latestCar.map(car => (
+                {cars.map(car => (
                                     <SwiperSlide key={car.id} className="swiper-slide">
                                         <div className="product-card style-2">
                                             <div className="product-img">
@@ -163,4 +184,4 @@ function index() {
   )
 }
 
-export default index
+export default index;
