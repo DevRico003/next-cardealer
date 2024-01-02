@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { latestCar } from '../../../data/mappedDataa';
 import SelectComponent from '@/src/utils/SelectComponent'
 
 function index() {
