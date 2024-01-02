@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     // Simulate loading for 0,5 seconds (adjust as needed)
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 100);
   }, []);
   useEffect(() => {
     import("../../public/assets/js/bootstrap.min.js");
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }) {
               sizes="20x20"
             />
           </Head>
-          {/* <Preloader onClose={handlePreloaderClose} /> */}
+          <Preloader onClose={handlePreloaderClose} />
         </>
       ) : (
         <>
