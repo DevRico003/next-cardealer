@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import Script from "next/script";
 import Preloader from "../components/common/Preloader";
 function MyApp({ Component, pageProps }) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handlePreloaderClose = () => {
     setLoading(false); 
