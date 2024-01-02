@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import Script from "next/script";
 import Preloader from "../components/common/Preloader";
 function MyApp({ Component, pageProps }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handlePreloaderClose = () => {
     setLoading(false); 
@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     // Simulate loading for 3 seconds (adjust as needed)
     setTimeout(() => {
       setLoading(false);
-    }, 100);
+    }, 500);
   }, []);
   useEffect(() => {
     import("../../public/assets/js/bootstrap.min.js");
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }) {
               sizes="20x20"
             />
           </Head>
-          {/* <Preloader onClose={handlePreloaderClose} /> */}
+          <Preloader onClose={handlePreloaderClose} />
         </>
       ) : (
         <>
