@@ -72,6 +72,7 @@ const onGearboxFilterChange = (newGearboxFilter) => { setGearboxFilter(newGearbo
 const handlePageChange = (newPage) => { setCurrentPage(newPage); };
 
 const totalPages = Math.ceil(allCars.length / itemsPerPage); // Calculate total pages based on all cars
+const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1); // Array of page numbers
 
 
 return (
@@ -166,15 +167,13 @@ return (
                   <div className="col-lg-12">
                     <div className="pagination-and-next-prev">
                       <div className="pagination">
-                        <ul>
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
-                <li key={pageNumber} className={`pagination-item ${pageNumber === currentPage ? 'active' : ''}` } style={{ marginRight: '15px' }}>
-                  <a href="#" onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}>
-                    {pageNumber}
-                  </a>
-                </li>
-                          ))}
-                        </ul>
+                      <ul>
+                            {pageNumbers.map((pageNumber, index) => (
+                              <li key={pageNumber} className={`pagination-item ${pageNumber === currentPage ? 'active' : ''}`} style={{ marginRight: '15px' }}>
+                                <a href="#" onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}>{pageNumber}</a>
+                              </li>
+                            ))}
+                          </ul>
                       </div>
                     </div>
                   </div>
