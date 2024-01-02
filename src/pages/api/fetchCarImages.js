@@ -41,20 +41,41 @@ const fetchImagesForCar = async (id) => {
 
 // Next.js API route handler to fetch and save all images
 export default async function fetchCarImagesHandler(req, res) {
+
+  let maxPages = null;
+  let allMappedData = []; // Store all mapped data across pages
+
   await connectToDatabase();
 
   try {
-    const cars = await Car.find({});
-    console.log('Cars fetched from database:', cars);
+    // Löschen aller vorhandenen Dokumente in der CarImages-Kollektion
+    await CarImages.deleteMany({});
+
+    // Anfängliche Setup für das Blättern
+    let currentPage = 1;
+    let maxPages = null;
 
     let allCarImages = [];
-    for (const car of cars) {
 
-      const carImages = await fetchImagesForCar(car.id);
-      allCarImages.push(carImages);
+    while (maxPages === null || currentPage <= maxPages) {
+      const cars = await Car.find({}).skip((currentPage - 1) * 20).limit(20); // Beispiel, wie 20 Autos pro Seite abgerufen werden
 
-      // Save to MongoDB using CarImages model
-      await CarImages.updateOne({ id: car.id }, { $set: { images: carImages.images } }, { upsert: true });
+      console.log(`Fetching data for page: ${currentPage}`);
+      console.log('Cars fetched from database:', cars.length);
+
+      for (const car of cars) {
+        const carImages = await fetchImagesForCar(car.id);
+        allCarImages.push(carImages);
+
+        // Save to MongoDB using CarImages model
+        await CarImages.updateOne({ id: car.id }, { $set: { images: carImages.images } }, { upsert: true });
+      }
+
+      if (cars.length === 0 || cars.length < 20) { // Hier können Sie eine bessere Bedingung für die maxPages festlegen
+        break; // Beenden, wenn keine weiteren Autos zu verarbeiten sind
+      }
+
+      currentPage++; // Zur nächsten Seite gehen
     }
 
     console.log('All old data deleted and all new images saved to MongoDB with their respective car IDs');
