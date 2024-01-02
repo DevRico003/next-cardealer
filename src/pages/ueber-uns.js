@@ -156,7 +156,7 @@ function About() {
                   <p>Eine von vielen Möglichkeiten, bei uns ein Auto zu kaufen.</p>
                 </div>      
                 <div className="video-btn">
-                  <a onClick={() => setOpen(true)}  className="video-popup"><i className="bi bi-play-circle" /> Watch video</a>
+                  <a onClick={() => setOpen(true)}  className="video-popup"><i className="bi bi-play-circle" /> Video ansehen</a>
                 </div> 
               </div>
             </div>
