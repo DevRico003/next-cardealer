@@ -16,6 +16,7 @@ function CarListingLeftSidebar() {
   const [fuelTypeFilter, setFuelTypeFilter] = useState([]);
   const [gearboxFilter, setGearboxFilter] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filteredCars, setFilteredCars] = useState([]);  // Autos after filters are applied
   const itemsPerPage = 10;
 
   // Fetch cars from the API
@@ -43,36 +44,58 @@ function CarListingLeftSidebar() {
 
   // Apply filters whenever a filter changes or the full list of cars changes
   useEffect(() => {
-    let filteredCars = allCars; // Start with the full list of cars
+    let result = allCars; // Start with the full list of cars
 
     if (makeFilter.length > 0) {
-      filteredCars = filteredCars.filter(car => makeFilter.includes(car.make));
+      result = result.filter(car => makeFilter.includes(car.make));
     }
     if (modelFilter.length > 0) {
-      filteredCars = filteredCars.filter(car => modelFilter.includes(car.carModel));
+      result = result.filter(car => modelFilter.includes(car.carModel));
     }
     if (fuelTypeFilter.length > 0) {
-      filteredCars = filteredCars.filter(car => 
+      result = result.filter(car => 
         car.fuelTypes.some(fuelType => fuelTypeFilter.includes(fuelType.trim()))
       );
     }
     if (gearboxFilter.length > 0) {
-      filteredCars = filteredCars.filter(car => gearboxFilter.includes(car.gearbox));
+      result = result.filter(car => gearboxFilter.includes(car.gearbox));
     }
+  
+    setFilteredCars(result);
+  }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, allCars, query.make]);
+
+// Paginierung der gefilterten Autos
+useEffect(() => {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedCars = filteredCars.slice(startIndex, endIndex);
+  setDisplayedCars(paginatedCars);
+}, [currentPage, itemsPerPage, filteredCars]);
 
 
-    
-    setDisplayedCars(filteredCars);  // Update displayed cars based on filters and pagination
-  }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, allCars, currentPage, query.make]);
+
+useEffect(() => {
+  const page = parseInt(query.page) || 1;
+  setCurrentPage(page);
+}, [query.page]);
+
 
   // Handlers for updating filters and pagination
   const onMakeFilterChange = (newMakeFilter) => { setMakeFilter(newMakeFilter); };
   const onModelFilterChange = (newModelFilter) => { setModelFilter(newModelFilter); };
   const onFuelTypeFilterChange = (newFuelTypeFilter) => { setFuelTypeFilter(newFuelTypeFilter); };
   const onGearboxFilterChange = (newGearboxFilter) => { setGearboxFilter(newGearboxFilter); };
-  const handlePageChange = (newPage) => { setCurrentPage(newPage); };
 
-  const totalPages = Math.ceil(allCars.length / itemsPerPage); // Calculate total pages based on all cars
+  const handlePageChange = (newPage) => {
+    // Aktualisiere die URL mit der neuen Seite
+    const newQuery = { ...query, page: newPage };
+    router.push({ pathname: router.pathname, query: newQuery });
+  
+    setCurrentPage(newPage);
+  };
+
+  const totalPages = Math.ceil(filteredCars.length / itemsPerPage); // Calculate total pages based on filtered cars
+
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1); // Array of page numbers
 
   return (
@@ -90,7 +113,7 @@ function CarListingLeftSidebar() {
               <div className="row mb-40">
                 <div className="col-lg-12">
                   <div className="show-item-and-filter">
-                    <p>Es gibt <strong>{displayedCars.length}</strong> verfügbare Autos.</p>
+                    <p>Es gibt <strong>{filteredCars.length}</strong> verfügbare Autos.</p>
                   </div>
                 </div>
               </div>
@@ -168,10 +191,12 @@ function CarListingLeftSidebar() {
                       <div className="pagination-and-next-prev">
                         <div className="pagination">
                         <ul>
-                            {pageNumbers.map((pageNumber, index) => (
-                              <li key={pageNumber} className={`pagination-item ${pageNumber === currentPage ? 'active' : ''}`} style={{ marginRight: '15px' }}>
-                                <a href="#" onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}>{pageNumber}</a>
-                              </li>
+                        {pageNumbers.map((pageNumber) => (
+                          <li key={pageNumber} className={`pagination-item ${pageNumber === currentPage ? 'active' : ''}`}>
+                            <a href="#" onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}>
+                              {pageNumber}
+                            </a>
+                          </li>
                             ))}
                           </ul>
                         </div>
