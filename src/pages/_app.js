@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }) {
               sizes="20x20"
             />
           </Head>
-          <Preloader onClose={handlePreloaderClose} />
+          {/* <Preloader onClose={handlePreloaderClose} /> */}
         </>
       ) : (
         <>
