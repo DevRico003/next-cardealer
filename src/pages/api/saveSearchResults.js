@@ -1,28 +1,41 @@
-import { Temp } from '../../models/Temp';
-import connectToDatabase from '../../utils/connectToDatabase';
+import { S3 } from 'aws-sdk';
+import { v4 as uuidv4 } from 'uuid';
 
-export default async function handler(req, res) {
-  console.log('Request body:', req.body);
+export default function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      // Verbinden Sie mit der Datenbank
-      await connectToDatabase();
+      // Konfigurieren Sie AWS S3
+      const s3 = new S3({
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        region: process.env.AWS_REGION,
+      });
 
-      // Erstellen Sie ein neues Dokument mit den Daten aus dem Request-Body
-      const newTemp = new Temp(req.body);
-      console.log('Daten, die gespeichert werden sollen:', newTemp);
-      // if (!req.body.fuelTypes || !req.body.images) {
-      //   return res.status(400).json({ error: 'Missing required fields' });
-      // }
-      // Speichern des Dokuments in der Datenbank
-      await newTemp.save();
+      const id = uuidv4();
+      const fileName = `${id}.json`;
+      const fileContent = JSON.stringify(req.body);
 
-      res.status(200).json({ id: newTemp._id });
+      // Erstellen Sie die Parameter für das Hochladen in S3
+      const uploadParams = {
+        Bucket: process.env.AWS_BUCKET_NAME, // Der Name Ihres S3-Buckets
+        Key: fileName, // Der Dateiname im Bucket
+        Body: fileContent, // Inhalt der Datei
+        ContentType: 'application/json', // Setzen des Content-Types
+      };
+
+      // Hochladen der Datei in S3
+      s3.upload(uploadParams, function(err, data) {
+        if (err) {
+          throw err;
+        }
+        console.log(`File uploaded successfully. ${data.Location}`);
+        res.status(200).json({ id });
+      });
     } catch (error) {
-      console.error('Failed to save the data:', error);
-      res.status(500).json({ error: 'Failed to save the data' });
+      console.error('Fehler beim Hochladen:', error);
+      res.status(500).json({ message: 'Fehler beim Speichern der Daten', error });
     }
   } else {
-    res.status(405).end(); // Method Not Allowed
+    res.status(405).end(); // Methode nicht erlaubt
   }
 }

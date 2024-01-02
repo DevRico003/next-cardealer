@@ -7,7 +7,7 @@ import Link from 'next/link';
 function SearchResults() {
   const [results, setResults] = useState([]);
   const router = useRouter();
-  const { id } = router.query; // Extrahieren der ID aus dem Query
+  const { id } = router.query;
   const [activeClass, setActiveClass] = useState('grid-group-wrapper');
   const [allCars, setAllCars] = useState([]);  // Store all cars from the API
   const [displayedCars, setDisplayedCars] = useState([]);  // Cars to be displayed after filtering
@@ -20,27 +20,22 @@ function SearchResults() {
 
   useEffect(() => {
     async function fetchData() {
-      if (id) {
-        try {
-          const response = await fetch(`/api/getSearchResults?id=${id}`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        if(id) {
+            try {
+              const response = await fetch(`/api/getSearchResults?id=${id}`);
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              const data = await response.json();
+              setResults(data || []);
+              setAllCars(data || []);
+            } catch (error) {
+              console.error('Fetching search results failed:', error);
+              setResults([]);
+              setAllCars([]);
+            }
           }
-          const data = await response.json();
-          if (data && typeof data === 'object') {
-            setResults([data]);  // Setze die Daten in ein Array
-            setAllCars([data]);  // Setze die Daten in ein Array
-          } else {
-            console.error('Erwartete Auto-Daten, erhielt:', data);
-            setResults([]);
-            setAllCars([]);
-          }
-        } catch (error) {
-          console.error('Fetching search results failed:', error);
-          setResults([]);
-          setAllCars([]);
-        }
-      }
+      
     }
     fetchData();
   }, [id]); // Abhängigkeit zu id hinzufügen

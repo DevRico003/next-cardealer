@@ -14,22 +14,27 @@ function index() {
   // Fetch car data from your API when the component mounts
   useEffect(() => {
     const fetchCars = async () => {
-      const response = await fetch('/api/cars');
-      const data = await response.json();
-      console.log(data)
-      setCars(data);
+      try {
+        const response = await fetch('/api/cars');
+        if (!response.ok) {
+          throw new Error(`HTTP-Error: ${response.status}`);
+        }
+        const data = await response.json();
+        setCars(data);
+      } catch (error) {
+        console.error('Fehler beim Laden der Autos:', error);
+        // Hier könnten Sie zusätzliche Fehlerbehandlung einfügen, z.B. einen Zustand für Fehlermeldungen
+      }
     };
     fetchCars();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []);
 
   const handleSearch = async () => {
     const filteredCars = cars.filter(car => {
       const carPrice = typeof car.price === 'string' ? parseInt(car.price.replace(/\D/g, ''), 10) : car.price;
       return car.make === selectedMake && carPrice <= selectedBudget;
     });
-  
-    console.log('Zu sendende gefilterte Autos:', filteredCars);
-  
+
     try {
       const response = await fetch('/api/saveSearchResults', {
         method: 'POST',
@@ -38,19 +43,19 @@ function index() {
         },
         body: JSON.stringify(filteredCars),
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP-Error: ${response.status}`);
       }
-  
+
       const data = await response.json();
-      console.log('Server-Antwort:', data);
       setSearchId(data.id);
       router.push(`/search-results?id=${data.id}`);
     } catch (error) {
       console.error('Fehler bei der Anfrage:', error);
     }
   };
+  
   
 
   const handleMakeChange = (value) => {
