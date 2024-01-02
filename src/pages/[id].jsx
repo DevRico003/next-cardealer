@@ -29,8 +29,8 @@ const CarDetails = () => {
             disableOnInteraction: false,
           },
           navigation: {
-              nextEl: ".next-2",
-              prevEl: ".prev-2",
+              nextEl: ".product-stand-next",
+              prevEl: ".product-stand-prev",
           },
   
           }
@@ -212,12 +212,12 @@ useEffect(() => {
                               {carImages.images.length}
                             </div>
                             <div className="slider-btn-group">
-                              <div className="prev-2 swiper-arrow">
+                              <div className="product-stand-prev swiper-arrow">
                                 <svg width={8} height={13} viewBox="0 0 8 13" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M0 6.50008L8 0L2.90909 6.50008L8 13L0 6.50008Z" />
                                 </svg>
                               </div>
-                              <div className="next-2 swiper-arrow">
+                              <div className="product-stand-next swiper-arrow">
                                 <svg width={8} height={13} viewBox="0 0 8 13" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M8 6.50008L0 0L5.09091 6.50008L0 13L8 6.50008Z" />
                                 </svg>
