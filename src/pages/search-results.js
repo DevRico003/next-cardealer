@@ -168,7 +168,7 @@ return (
                       <div className="pagination">
                         <ul>
                         {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
-                <li key={pageNumber} className={`pagination-item ${pageNumber === currentPage ? 'active' : ''}`}>
+                <li key={pageNumber} className={`pagination-item ${pageNumber === currentPage ? 'active' : ''}` } style={{ marginRight: '15px' }}>
                   <a href="#" onClick={(e) => { e.preventDefault(); handlePageChange(pageNumber); }}>
                     {pageNumber}
                   </a>
