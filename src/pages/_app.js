@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     // Simulate loading for 0,5 seconds (adjust as needed)
     setTimeout(() => {
       setLoading(false);
-    }, 100);
+    }, 300);
   }, []);
   useEffect(() => {
     import("../../public/assets/js/bootstrap.min.js");
