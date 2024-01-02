@@ -25,11 +25,12 @@ const CarDetails = () => {
           spaceBetween: 25,
           loop: true,
           autoplay: {
-              delay: 2500, // Autoplay duration in milliseconds
+            delay: 2500, // Autoplay duration in milliseconds
+            disableOnInteraction: false,
           },
           navigation: {
-              nextEl: ".product-stand-next",
-              prevEl: ".product-stand-prev",
+            nextEl: ".next-2",
+            prevEl: ".prev-2",
           },
   
           }
