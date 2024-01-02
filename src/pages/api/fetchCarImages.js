@@ -57,7 +57,7 @@ export default async function fetchCarImagesHandler(req, res) {
       await CarImages.updateOne({ id: car.id }, { $set: { images: carImages.images } }, { upsert: true });
     }
 
-    console.log('All images saved to MongoDB with their respective car IDs');
+    console.log('All old data deleted and all new images saved to MongoDB with their respective car IDs');
     res.status(200).json({ message: 'Images successfully fetched and saved in MongoDB', count: allCarImages.length });
   } catch (error) {
     console.error('Error during image fetching and saving:', error);
