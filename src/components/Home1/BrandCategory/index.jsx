@@ -19,8 +19,8 @@ function index() {
         const uniqueMakes = [...new Set(data.map(car => car.make))];
         const brandCategoryData = uniqueMakes.map((make, index) => ({
           id: index + 1,
-          icons: `assets/img/home1/icon/${make}.svg`,
-          image: "assets/img/home1/icon/bmw-car.svg",
+          icons: `assets/img/home1/icon/${make}.svg`
+          // image: "assets/img/home1/icon/bmw-car.svg",
         }));
 
         // Set BrandCategoryHome1 in state
@@ -46,12 +46,13 @@ function index() {
               <div className="col wow fadeInUp" data-wow-delay="200ms" key={id}>
                 <Link legacyBehavior href={{ pathname: '/fahrzeuge', query: { make } }}>
                   <a className="single-category1">
-                    <div className="brand-icon">
+                    {/* for image change brand-image to brand-icon */}
+                    <div className="brand-image"> 
                       <img src={icons} alt="" />
                     </div>
-                    <div className="brand-car">
+                    {/* <div className="brand-car">
                       <img src={image} alt="" />
-                    </div>
+                    </div> */}
                   </a>
                 </Link>
               </div>
