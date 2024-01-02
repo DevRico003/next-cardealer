@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { latestCar } from "../data/mappedDataa";
-import { latestCarImages } from "../data/imageData"
 import MainLayout from '../layout/MainLayout'
 import SwiperCore, { Autoplay, EffectFade, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
