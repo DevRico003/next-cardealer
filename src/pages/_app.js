@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   useEffect(() => {
-    // Simulate loading for 3 seconds (adjust as needed)
+    // Simulate loading for 0,5 seconds (adjust as needed)
     setTimeout(() => {
       setLoading(false);
     }, 500);
