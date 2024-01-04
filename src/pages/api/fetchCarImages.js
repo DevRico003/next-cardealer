@@ -4,7 +4,7 @@ import { Car } from '../../models/Car';
 import { CarImages } from '../../models/CarImages';
 
 // Function to fetch images for a single car
-const fetchImagesForCar = async (id) => {
+const fetchImagesForCar = async (id) => { // id is the car ID
   const encodedCredentials = process.env.ENCODED_CREDENTIALS;
   const url = `https://services.mobile.de/search-api/ad/${id}/images`;
 
@@ -15,9 +15,9 @@ const fetchImagesForCar = async (id) => {
   };
 
   try {
-    const response = await fetch(url, { method: 'GET', headers });
+    const response = await fetch(url, { method: 'GET', headers }); // fetch images for a single car
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`); // throw an error if the status is not 200
     }
     const data = await response.json();
 

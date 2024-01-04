@@ -1,9 +1,9 @@
 import { S3 } from 'aws-sdk';
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
-    const { id } = req.query;
-    const s3 = new S3({
+  if (req.method === 'GET') { // if request is a GET request
+    const { id } = req.query; // get id from query params
+    const s3 = new S3({  
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
       region: process.env.AWS_REGION,
@@ -15,9 +15,9 @@ export default async function handler(req, res) {
     };
 
     try {
-      const { Body } = await s3.getObject(params).promise();
-      const data = Body.toString('utf-8');
-      res.status(200).json(JSON.parse(data));
+      const { Body } = await s3.getObject(params).promise(); // get file from S3
+      const data = Body.toString('utf-8'); // convert file to string
+      res.status(200).json(JSON.parse(data)); // return file
     } catch (error) {
       if (error.code === 'NoSuchKey') {
         res.status(404).json({ message: 'File not found' });

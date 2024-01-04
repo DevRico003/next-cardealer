@@ -4,7 +4,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export default async function sendEmail(req, res) {
   if (req.method === 'POST') {
-    const { name, email, phone, message } = req.body;
+    const { name, email, phone, message } = req.body; // get data from request body
     const content = {
       to: 'info@carcenter-erding.de',
       // to: 'palermo003@gmail.com',

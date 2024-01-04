@@ -7,11 +7,11 @@ export default async function handler(req, res) {
 const { id } = req.query;
 
 try {
-  const car = await Car.findOne({ id: id });
-  if (car) {
-    res.status(200).json(car);
-  } else {
-    res.status(404).json({ message: 'Cars not found' });
+  const car = await Car.findOne({ id: id }); // find all cars
+  if (car) { // if car images exist
+    res.status(200).json(car); // return all cars
+  } else { // if car images do not exist
+    res.status(404).json({ message: 'Cars not found' }); // return error
   }
 } catch (error) {
   console.error('Error fetching cars:', error);
