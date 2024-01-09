@@ -1,1 +1,0 @@
-kubeadm join 173.249.46.248:6443 --token zp2gv0.44ingmj6om43l40w --discovery-token-ca-cert-hash sha256:74db2537eddf1b7ba74d684aad5aab367f06eaf880040145deef390253d92439 
