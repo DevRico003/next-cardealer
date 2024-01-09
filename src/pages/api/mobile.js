@@ -94,19 +94,7 @@ const mapData = (data) => {
     const fuelKey = ad?.vehicle?.specifics.fuel?.["@key"];
     // Safely access the numSeats value with optional chaining and nullish coalescing
     const numSeats = ad?.vehicle?.specifics?.["num-seats"]?.["@value"] ?? "Unknown";
-    const location = `${ad?.seller?.address?.city?.["@value"] || 'Unbekannt'}, ${ad?.seller?.address?.["country-code"]?.["@value"] || 'Unbekannt'}`;
-    const make = ad?.vehicle?.make?.["@key"] || 'Unbekannt';
-    const carModel = `${ad?.vehicle?.make?.["local-description"]?.["$"] || 'Unbekannt'} ${ad?.vehicle?.model?.["local-description"]?.["$"] || 'Unbekannt'}`;
-    const mileage = `${ad?.vehicle?.specifics?.mileage?.["@value"] || '0'} km`;
-    const firstRegistration = ad?.vehicle?.specifics?.["first-registration"]?.["@value"] || 'Unbekannt';
-    const fuelTypes = [fuelType || 'Unbekannt'];
-    const isElectric = fuelKey === "HYBRID";
-    const power = `${ad?.vehicle?.specifics?.power?.["@value"] || '0'} PS`;
-    const gearbox = ad?.vehicle?.specifics?.gearbox?.["local-description"]?.["$"] || 'Unbekannt';
-    const images = Array.isArray(ad?.images?.image?.representation) ? 
-    ad.images.image.representation.map((img) => img["@url"]) : 
-    [];
-    const price = parseFloat(ad?.price?.["consumer-price-amount"]?.["@value"]) || 0.0;
+
 
     if (!categoryDescription || !categoryUrl) {
       console.error("Category description or URL is undefined", ad);
@@ -144,18 +132,18 @@ const mapData = (data) => {
 
     return {
       id: parseInt(ad["@key"]),
-      location,
-      make,
-      carModel,
-      mileage,
-      firstRegistration,
-      fuelTypes,
-      isElectric,
-      power,
-      gearbox,
-      numSeats,
-      price,
-      images,
+      location: `${ad?.seller?.address?.city?.["@value"]}, ${ad?.seller?.address?.["country-code"]?.["@value"]}`,
+      make: ad["vehicle"]["make"]["@key"],
+      carModel: `${ad?.vehicle?.make?.["local-description"]?.["$"]} ${ad?.vehicle?.model?.["local-description"]?.["$"]}`,
+      mileage: `${ad?.vehicle?.specifics?.mileage?.["@value"]} km`,
+      firstRegistration: ad["vehicle"]["specifics"]["first-registration"]["@value"],
+      fuelTypes: [fuelType],
+      isElectric: fuelKey === "HYBRID",
+      power: ad["vehicle"]["specifics"]["power"]["@value"] + " PS",
+      gearbox: ad["vehicle"]["specifics"]["gearbox"]["local-description"]["$"],
+      numSeats: numSeats,
+      price: parseFloat(ad["price"]["consumer-price-amount"]["@value"]),
+      images: ad["images"]["image"]["representation"].map((img) => img["@url"]),
       category: {
         name: categoryDescription,
         slug: categoryUrl?.split('/').pop(),
