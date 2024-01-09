@@ -155,6 +155,24 @@ const mapData = (data) => {
   });
 };
 
+// Funktion, um Details für eine spezifische Car-ID erneut abzurufen
+const fetchCarDetails = async (carId, maxRetries = 20) => {
+  let retries = 0;
+  while (retries < maxRetries) {
+    try {
+      const queryParams = { id: carId };
+      const result = await execute(queryParams);
+      if (result && result.images) {
+        return result; // Return the result if images are present
+      }
+    } catch (e) {
+      console.error(`Error fetching details for car ID ${carId}:`, e.message);
+    }
+    retries++;
+  }
+  return null; // Return null if retries exceeded without success
+};
+
 // Next.js API route handler
 export default async function mobileHandler(req, res) {
 
@@ -165,47 +183,57 @@ export default async function mobileHandler(req, res) {
     // Verbinden Sie mit der Datenbank
     await connectToDatabase();
 
-    // Löschen aller vorhandenen Dokumente in der Car-Kollektion
-    await Car.deleteMany({});
-
     while (maxPages === null || currentPage <= maxPages) {
-      console.log(`Fetching data for page: ${currentPage}`); // Log the current page being fetched
+      console.log(`Fetching data for page: ${currentPage}`);
 
       const queryParams = {
-        ...req.query, // Spread any additional query parameters
+        ...req.query,
         "customerNumber": '726774',
-        "page.number": currentPage // Use the updated currentPage value
+        "page.number": currentPage
       };
-      
-      const result = await execute(queryParams); // Pass the updated query parameters
+
+      const result = await execute(queryParams);
 
       if (result) {
         const jsonResponse = result;
         maxPages = Number(jsonResponse["search-result"]["max-pages"]);
-        
-        const mappedData = mapData(jsonResponse); // Map the data for the current page
-        allMappedData = allMappedData.concat(mappedData); // Append the mapped data for the current page to the total
 
-        // Speichern jedes Car-Objekts in MongoDB
-        await Car.insertMany(mappedData);
+        const mappedData = mapData(jsonResponse);
+        allMappedData = allMappedData.concat(mappedData);
 
-        if (currentPage <= maxPages) {
-          currentPage++; // Increment to fetch the next page in the next iteration
-        } else {
-          currentPage = 1; // Reset to the first page for the next run
-        } 
         
-        console.log(`Moving to next page: ${currentPage}`); // Log the next page to be fetched
+        for (const carData of mappedData) {
+          // Prüfen, ob Bilder fehlen
+          if (!carData.images || carData.images.length === 0) {
+            console.log(`Images missing for Car ID ${carData.id}, refetching...`);
+            const refetchedCarData = await fetchCarDetails(carData.id);
+            if (refetchedCarData) {
+              carData.images = refetchedCarData.images;
+            } else {
+              console.log(`Failed to fetch images for Car ID ${carData.id} after retries.`);
+            }
+          }
+          // Überprüfen und aktualisieren oder einfügen von Daten
+          const existingCar = await Car.findOne({ id: carData.id });
+          if (existingCar) {
+            await Car.updateOne({ id: carData.id }, carData);
+          } else {
+            await Car.create(carData);
+          }
+        }
+
+        currentPage = currentPage <= maxPages ? currentPage + 1 : 1;
+        console.log(`Moving to next page: ${currentPage}`);
       } else {
-        const currentError = getError(); // Stellen Sie sicher, dass Sie eine Methode haben, um Fehler zu erhalten.
+        const currentError = getError();
         console.error('Error fetching data for page:', currentPage, currentError);
         res.status(500).json({ error: `Failed at page ${currentPage}: ${currentError}` });
         return;
       }
     }
 
-    console.log('All old data deleted and new data successfully saved to MongoDB');
-    res.status(200).send(allMappedData); // Send the total mapped data as response
+    console.log('Data successfully processed and saved/updated in MongoDB');
+    res.status(200).send(allMappedData);
   } catch (error) {
     console.error('Error during processing:', error);
     res.status(500).json({ error: error.message || 'Unknown error occurred' });
