@@ -48,13 +48,12 @@ export default async function fetchCarImagesHandler(req, res) {
   await connectToDatabase();
 
   try {
-    // Löschen aller vorhandenen Dokumente in der CarImages-Kollektion
-    await CarImages.deleteMany({});
+    // // Löschen aller vorhandenen Dokumente in der CarImages-Kollektion
+    // await CarImages.deleteMany({});
 
     // Anfängliche Setup für das Blättern
     let currentPage = 1;
     let maxPages = null;
-
     let allCarImages = [];
 
     while (maxPages === null || currentPage <= maxPages) {
@@ -65,10 +64,11 @@ export default async function fetchCarImagesHandler(req, res) {
 
       for (const car of cars) {
         const carImages = await fetchImagesForCar(car.id);
-        allCarImages.push(carImages);
 
         // Save to MongoDB using CarImages model
         await CarImages.updateOne({ id: car.id }, { $set: { images: carImages.images } }, { upsert: true });
+
+        allCarImages.push(carImages);
       }
 
       if (cars.length === 0 || cars.length < 20) { // Hier können Sie eine bessere Bedingung für die maxPages festlegen
@@ -78,7 +78,7 @@ export default async function fetchCarImagesHandler(req, res) {
       currentPage++; // Zur nächsten Seite gehen
     }
 
-    console.log('All old data deleted and all new images saved to MongoDB with their respective car IDs');
+    console.log('All images saved/updated in MongoDB with their respective car IDs');
     res.status(200).json({ message: 'Images successfully fetched and saved in MongoDB', count: allCarImages.length });
   } catch (error) {
     console.error('Error during image fetching and saving:', error);

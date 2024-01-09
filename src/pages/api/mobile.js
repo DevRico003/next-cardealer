@@ -156,7 +156,7 @@ const mapData = (data) => {
 };
 
 // Funktion, um Details für eine spezifische Car-ID erneut abzurufen
-const fetchCarDetails = async (carId, maxRetries = 1000) => {
+const fetchCarDetails = async (carId, maxRetries = 5) => {
   let retries = 0;
   while (retries < maxRetries) {
     try {
@@ -173,6 +173,28 @@ const fetchCarDetails = async (carId, maxRetries = 1000) => {
   return null; // Return null if retries exceeded without success
 };
 
+// Rekursive Funktion, um Car-Daten zu verarbeiten
+const fetchAndProcessCarData = async (carId, maxRetries = 10, currentRetry = 0) => {
+  if (currentRetry >= maxRetries) {
+    console.log(`Max retries reached for Car ID ${carId}. Skipping...`);
+    return null; // Keine weiteren Versuche, wenn die maxRetries erreicht sind
+  }
+
+  try {
+    const carData = await fetchCarDetails(carId);
+    if (carData && (carData.images.length > 0 || currentRetry >= maxRetries)) {
+      // Bilder gefunden oder maximale Versuche erreicht
+      return carData;
+    } else {
+      console.log(`No images for Car ID ${carId}, retrying... (${currentRetry + 1}/${maxRetries})`);
+      return await fetchAndProcessCarData(carId, maxRetries, currentRetry + 1); // Rekursiver Aufruf
+    }
+  } catch (error) {
+    console.error(`Error processing car ID ${carId}:`, error);
+    return null;
+  }
+};
+
 // Next.js API route handler
 export default async function mobileHandler(req, res) {
 
@@ -182,6 +204,9 @@ export default async function mobileHandler(req, res) {
   try {
     // Verbinden Sie mit der Datenbank
     await connectToDatabase();
+
+    // Löschen aller vorhandenen Dokumente in der Car-Kollektion
+    // await Car.deleteMany({});
 
     while (maxPages === null || currentPage <= maxPages) {
       console.log(`Fetching data for page: ${currentPage}`);
@@ -211,6 +236,7 @@ export default async function mobileHandler(req, res) {
               carData.images = refetchedCarData.images;
             } else {
               console.log(`Failed to fetch images for Car ID ${carData.id} after retries.`);
+              continue; // Skip this car if images are not available
             }
           }
           // Überprüfen und aktualisieren oder einfügen von Daten
