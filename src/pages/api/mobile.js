@@ -156,7 +156,7 @@ const mapData = (data) => {
 };
 
 // Funktion, um Details für eine spezifische Car-ID erneut abzurufen
-const fetchCarDetails = async (carId, maxRetries = 20) => {
+const fetchCarDetails = async (carId, maxRetries = 1000) => {
   let retries = 0;
   while (retries < maxRetries) {
     try {
