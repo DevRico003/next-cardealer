@@ -59,31 +59,6 @@ const execute = async (queryParams) => {
   }
 };
 
-// Funktion, um Details für eine spezifische Car-ID abzurufen
-const fetchCarDetailsWithImages = async (carId) => {
-  const detailsUrl = `https://services.mobile.de/search-api/ad/${carId}`;
-  try {
-    const response = await fetch(detailsUrl, { 
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Basic ${encodedCredentials}`,
-        'Accept-Language': 'de'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`Error fetching details for car ID ${carId}:`, error.message);
-    return null;
-  }
-};
-
 // Function to retrieve the "$" or "@key" value from the specifics
 const getValue = (item) => {
   // Check if the item is an object and not null
@@ -168,7 +143,7 @@ const mapData = (data) => {
       gearbox: ad["vehicle"]["specifics"]["gearbox"]["local-description"]["$"],
       numSeats: numSeats,
       price: parseFloat(ad["price"]["consumer-price-amount"]["@value"]),
-      // images: werden von einem anderen apicall weiter unten abgerufen , weil es probleme mit der mobile api gab
+      images: ad["images"]["image"]["representation"].map((img) => img["@url"]),
       category: {
         name: categoryDescription,
         slug: categoryUrl?.split('/').pop(),
@@ -178,6 +153,46 @@ const mapData = (data) => {
       ...mappedFeatures
     };
   });
+};
+
+// Funktion, um Details für eine spezifische Car-ID erneut abzurufen
+const fetchCarDetails = async (carId, maxRetries = 5) => {
+  let retries = 0;
+  while (retries < maxRetries) {
+    try {
+      const queryParams = { id: carId };
+      const result = await execute(queryParams);
+      if (result && result.images) {
+        return result; // Return the result if images are present
+      }
+    } catch (e) {
+      console.error(`Error fetching details for car ID ${carId}:`, e.message);
+    }
+    retries++;
+  }
+  return null; // Return null if retries exceeded without success
+};
+
+// Rekursive Funktion, um Car-Daten zu verarbeiten
+const fetchAndProcessCarData = async (carId, maxRetries = 10, currentRetry = 0) => {
+  if (currentRetry >= maxRetries) {
+    console.log(`Max retries reached for Car ID ${carId}. Skipping...`);
+    return null; // Keine weiteren Versuche, wenn die maxRetries erreicht sind
+  }
+
+  try {
+    const carData = await fetchCarDetails(carId);
+    if (carData && (carData.images.length > 0 || currentRetry >= maxRetries)) {
+      // Bilder gefunden oder maximale Versuche erreicht
+      return carData;
+    } else {
+      console.log(`No images for Car ID ${carId}, retrying... (${currentRetry + 1}/${maxRetries})`);
+      return await fetchAndProcessCarData(carId, maxRetries, currentRetry + 1); // Rekursiver Aufruf
+    }
+  } catch (error) {
+    console.error(`Error processing car ID ${carId}:`, error);
+    return null;
+  }
 };
 
 // Next.js API route handler
@@ -191,7 +206,7 @@ export default async function mobileHandler(req, res) {
     await connectToDatabase();
 
     // Löschen aller vorhandenen Dokumente in der Car-Kollektion
-    await Car.deleteMany({});
+    // await Car.deleteMany({});
 
     while (maxPages === null || currentPage <= maxPages) {
       console.log(`Fetching data for page: ${currentPage}`);
@@ -213,17 +228,17 @@ export default async function mobileHandler(req, res) {
 
         
         for (const carData of mappedData) {
-            // Hier holen Sie die detaillierten Informationen jedes Autos
-            const detailedCarData = await fetchCarDetailsWithImages(carData.id);
-            if (detailedCarData && detailedCarData.ad && detailedCarData.ad.images && detailedCarData.ad.images.image) {
-              // Stellen Sie sicher, dass image immer als Array behandelt wird
-              const imagesArray = Array.isArray(detailedCarData.ad.images.image) ? detailedCarData.ad.images.image : [detailedCarData.ad.images.image];
-              
-              // Nehmen Sie nur die erste Representation für jedes Bild
-    const images = imagesArray.map(img => img.representation[1]['@url']);
-              carData.images = images; // Fügt die Bilder zum Auto hinzu
+          // Prüfen, ob Bilder fehlen
+          if (!carData.images || carData.images.length === 0) {
+            console.log(`Images missing for Car ID ${carData.id}, refetching...`);
+            const refetchedCarData = await fetchCarDetails(carData.id);
+            if (refetchedCarData) {
+              carData.images = refetchedCarData.images;
+            } else {
+              console.log(`Failed to fetch images for Car ID ${carData.id} after retries.`);
+              continue; // Skip this car if images are not available
             }
-
+          }
           // Überprüfen und aktualisieren oder einfügen von Daten
           const existingCar = await Car.findOne({ id: carData.id });
           if (existingCar) {
