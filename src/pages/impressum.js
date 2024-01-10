@@ -14,7 +14,7 @@ const Impressum = () => {
         <main>
           <h1>Impressum</h1>
           <p>Angaben gemäß § 5 TMG:</p>
-          <p>CarCenterErding</p>
+          <p>CarCenter Erding</p>
           <p>Otto-Hahn-Str. 4</p>
           <p>85435 Erding</p>
 
