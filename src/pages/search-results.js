@@ -12,6 +12,7 @@ function SearchResults() {
   const [activeClass, setActiveClass] = useState('grid-group-wrapper');
   const [allCars, setAllCars] = useState([]);  // Store all cars from the API
   const [displayedCars, setDisplayedCars] = useState([]);  // Cars to be displayed after filtering
+  const [displayedMakes, setDisplayedMakes] = useState([]);
   const [makeFilter, setMakeFilter] = useState('');
   const [modelFilter, setModelFilter] = useState([]);
   const [fuelTypeFilter, setFuelTypeFilter] = useState([]);
@@ -74,6 +75,9 @@ useEffect(() => {
   const endIndex = startIndex + itemsPerPage;
   const paginatedCars = filteredCars.slice(startIndex, endIndex);
   setDisplayedCars(paginatedCars);
+// Extrahieren Sie die Marken aus den paginierten Autos
+const newDisplayedMakes = [...new Set(paginatedCars.map(car => car.make))];
+setDisplayedMakes(newDisplayedMakes);
 }, [currentPage, itemsPerPage, filteredCars]);
 
 
@@ -102,6 +106,7 @@ return (
       <div className="container">
         <div className="row g-xl-4 gy-5">
           <CarLeftSidebar 
+                  displayedMakes={displayedMakes}
                   onMakeFilterChange={onMakeFilterChange}
                   onModelFilterChange={onModelFilterChange}
                   onFuelTypeFilterChange={onFuelTypeFilterChange} 
@@ -128,7 +133,7 @@ return (
                           <div className="swiper product-img-slider">
                             <div className="swiper-wrapper">
                               <div className="swiper-slide">
-                                <img src={car.images[1]} alt={car.carModel} />
+                                <img src={car.images[0]} alt={car.carModel} />
                               </div>
                               {/* Additional Images */}
                             </div>

@@ -154,7 +154,7 @@ function CarListingLeftSidebar() {
                                   <div className="swiper-wrapper">
                                     <div className="swiper-slide">
                                       <img
-                                        src={car.images[1]}
+                                        src={car.images[0]}
                                         alt={car.carModel}
                                       />
                                     </div>

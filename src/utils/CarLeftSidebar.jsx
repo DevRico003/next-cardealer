@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
-function CarLeftSidebar({ onMakeFilterChange, onModelFilterChange, onFuelTypeFilterChange, onGearboxFilterChange }) {
+function CarLeftSidebar({ onMakeFilterChange, onModelFilterChange, onFuelTypeFilterChange, onGearboxFilterChange, displayedMakes }) {
   const [cars, setCars] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMakes, setSelectedMakes] = useState([]);
@@ -34,6 +34,11 @@ function CarLeftSidebar({ onMakeFilterChange, onModelFilterChange, onFuelTypeFil
       return [...new Set(allValues)].sort();
     };
   }, [cars]); 
+
+  // Verwenden Sie `displayedMakes` für die Anzeige der Marken
+  const makesToShow = useMemo(() => {
+    return displayedMakes || getUniqueValues('make');
+  }, [displayedMakes, getUniqueValues]);
 
   // Handler functions for changes in filters
   const handleSearchChange = (e) => {
@@ -140,7 +145,7 @@ return (
               />
             </div>
             <ul>
-              {makes.filter(make => make.toLowerCase().includes(searchTerm.toLowerCase())).map(make => (
+            {makesToShow.filter(make => make.toLowerCase().includes(searchTerm.toLowerCase())).map(make => (
                 <li key={make}>
                   <label className="containerss">
                     <input
