@@ -126,19 +126,26 @@ return (
                   {displayedCars.map((car) => (
                     <div key={car.id} className="col-lg-6 col-md-6 col-sm-12 wow fadeInUp item" data-wow-delay="200ms">
                       <div className="product-card">
-                        <div className="product-img">
-                          <a href="#" className="fav">
-                            {/* Favorite Icon */}
-                          </a>
-                          <div className="swiper product-img-slider">
-                            <div className="swiper-wrapper">
-                              <div className="swiper-slide">
-                                <img src={car.images[0]} alt={car.carModel} />
+                      <Link legacyBehavior href={`/${car.id}`}>
+                            <a className="product-img-link">
+                              <div className="product-img">
+                                <a href="#" className="fav">
+                                  {/* Favorite Icon */}
+                                </a>
+                                <div className="swiper product-img-slider">
+                                  <div className="swiper-wrapper">
+                                    <div className="swiper-slide">
+                                      <img
+                                        src={car.images[0]}
+                                        alt={car.carModel}
+                                      />
+                                    </div>
+                                    {/* Additional Images */}
+                                  </div>
+                                </div>
                               </div>
-                              {/* Additional Images */}
-                            </div>
-                          </div>
-                        </div>
+                            </a>
+                          </Link>
                         <div className="product-content">
                           <h5>
                             <Link legacyBehavior href={`/${car.id}`}>
