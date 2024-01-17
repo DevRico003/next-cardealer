@@ -62,6 +62,8 @@ const Datenschutz = () => {
 <p>Sie haben ferner nach Maßgabe der gesetzlichen Vorgaben das Recht, eine Beschwerde bei der zuständigen Aufsichtsbehörde einzureichen.</p>
 <h3 id="dsg-general-revokeconsent">Widerrufsrecht</h3>
 <p>Sie haben das Recht, erteilte Einwilligungen mit Wirkung für die Zukunft zu widerrufen.</p>
+<h3 id="dsg-general-revokeconsent">Analytics</h3>
+<p>Diese Webseite verwendet Google Analytics (Google, USA), um Statistiken über die Verwendung zu erfassen. Die IP-Adresse wird anonymisiert übertragen. Es werden auch Tracking-Cookies verwendet. Sollten Sie hiermit nicht einverstanden sein, können Sie der Verwendung von Cookies widersprechen.</p>
 <h3 id="dsg-general-object">Widerspruchsrecht</h3>
 <p><strong>Sie können der künftigen Verarbeitung der Sie betreffenden Daten nach Maßgabe der gesetzlichen Vorgaben jederzeit widersprechen. Der Widerspruch kann insbesondere gegen die Verarbeitung für Zwecke der Direktwerbung erfolgen.</strong></p>
 <h3 id="dsg-general-cookies">Cookies und Widerspruchsrecht bei Direktwerbung</h3>
