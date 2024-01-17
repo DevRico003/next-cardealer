@@ -8,6 +8,7 @@ import "../../public/assets/css/nice-select.css";
 import "../../styles/custom.css";
 import "../../public/assets/css/style.css";
 import { useEffect, useState } from "react";
+import { GoogleTagManager } from '@next/third-parties/google'
 import Script from "next/script";
 import Preloader from "../components/common/Preloader";
 function MyApp({ Component, pageProps }) {
@@ -64,6 +65,7 @@ function MyApp({ Component, pageProps }) {
             />
           </Head>
           <Component {...pageProps} />
+          <GoogleTagManager gtmId="G-JMQ06X2R39" />
         </>
       )}
     </>
