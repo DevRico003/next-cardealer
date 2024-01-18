@@ -98,11 +98,8 @@ function Header() {
               <li><Link legacyBehavior href="/#"><a>Bontätsprüfung</a></Link></li>
             </ul>
           </li> */}
-          <li className="menu-item-has-children">
-          <a href="#" className="drop-down">Garantie</a><i onClick={() => toggleMenu("pages")} className={`bi bi-${state.activeMenu === "pages" ?"dash":"plus"} dropdown-icon`} />
-          <ul className={`sub-menu ${ state.activeMenu === "pages" ? "d-block" : ""}`}>
-          <Link legacyBehavior href="/assets/pdf/garantie.pdf"><a target="_blank">PDF</a></Link>
-            </ul>
+          <li>
+          <Link legacyBehavior href="/assets/pdf/garantie.pdf"><a target="_blank">Garantie</a></Link>
           </li>
         <li>
         <Link legacyBehavior href="kontakt"><a>Kontakt</a></Link>
