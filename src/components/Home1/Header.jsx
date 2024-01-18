@@ -86,27 +86,26 @@ function Header() {
           <a href="/" className={`${state.activeMenu === "home-one" ? "active" : ""}`}>Home</a>
         </li>
         <li>
-          <a href="fahrzeuge">Fahrzeuge</a>
+        <Link legacyBehavior href="fahrzeuge"><a>Fahrzeuge</a></Link>
         </li>
         <li>
-          <a href="ueber-uns">Über uns</a>
+        <Link legacyBehavior href="ueber-uns"><a>Über uns</a></Link>
         </li>
-        <li className="menu-item-has-children">
+        {/* <li className="menu-item-has-children">
           <a href="#" className="drop-down">Finanzierung</a><i onClick={() => toggleMenu("pages")} className={`bi bi-${state.activeMenu === "pages" ?"dash":"plus"} dropdown-icon`} />
           <ul className={`sub-menu ${ state.activeMenu === "pages" ? "d-block" : ""}`}>
               <li><Link legacyBehavior href="/#"><a>Online-Calculator</a></Link></li>
               <li><Link legacyBehavior href="/#"><a>Bontätsprüfung</a></Link></li>
             </ul>
-          </li>
+          </li> */}
           <li className="menu-item-has-children">
           <a href="#" className="drop-down">Garantie</a><i onClick={() => toggleMenu("pages")} className={`bi bi-${state.activeMenu === "pages" ?"dash":"plus"} dropdown-icon`} />
           <ul className={`sub-menu ${ state.activeMenu === "pages" ? "d-block" : ""}`}>
-              <li><Link legacyBehavior href="/#"><a>Langzeitschutz</a></Link></li>
-              <li><Link legacyBehavior href="/#"><a>Gebrauchtwagen-Garantie</a></Link></li>
+          <Link legacyBehavior href="/assets/pdf/garantie.pdf"><a target="_blank">PDF</a></Link>
             </ul>
           </li>
         <li>
-          <a href="kontakt">Kontakt</a>
+        <Link legacyBehavior href="kontakt"><a>Kontakt</a></Link>
         </li>
 
         </ul>
