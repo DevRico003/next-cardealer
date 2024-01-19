@@ -1,0 +1,16 @@
+{
+    "crons": [
+      {
+        "path": "/api/mobile",
+        "schedule": "*/5 * * * *"
+      },
+        {
+            "path": "/api/fetchCarImages",
+            "schedule": "0 1 * * *"
+        },
+        {
+            "path": "/api/emptyTemp",
+            "schedule": "0 2 * * *"
+          }
+    ]
+  }
