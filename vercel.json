@@ -1,15 +1,15 @@
 {
     "crons": [
       {
-        "path": "/api/mobile",
+        "path": "src/pages/api/mobile",
         "schedule": "*/5 * * * *"
       },
         {
-            "path": "/api/fetchCarImages",
+            "path": "src/pages/api/fetchCarImages",
             "schedule": "0 1 * * *"
         },
         {
-            "path": "/api/emptyTemp",
+            "path": "src/pages/api/emptyTemp",
             "schedule": "0 2 * * *"
           }
     ]
