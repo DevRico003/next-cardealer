@@ -12,7 +12,6 @@ import WhyChoose from "../components/Home1/WhyChoose/index";
 SwiperCore.use([Pagination, Autoplay, EffectFade, Navigation]);
 import MainLayout from '../layout/MainLayout'
 
-
 function About() {
   const [isOpen, setOpen] = useState(false);
   const [isOpenimg, setOpenimg] = useState({
