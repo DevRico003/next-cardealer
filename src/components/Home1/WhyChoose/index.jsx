@@ -41,7 +41,7 @@ function index() {
                 <div className="choose-icon">
                   <img src="assets/img/home1/icon/affordable.svg" alt="" />
                 </div>
-                <h5><span>Kundensienst</span> mit Priorität</h5>
+                <h5><span>Kundendienst</span> mit Priorität</h5>
               </div>
               <p>Wir beheben umgehend alle Mängel an Fahrzeugen, die Sie bei uns erwerben. Ihre Zufriedenheit ist unser Ziel.</p>
             </div>

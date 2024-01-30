@@ -187,7 +187,7 @@ function About() {
                           <img src="assets/img/home2/icon/contact.svg" alt="" />
                         </div>
                         <div className="content">
-                          <h6>Kontaktiere uns</h6>
+                          <h6>Kontaktieren Sie uns</h6>
                           <p>Nachdem Sie den Standort besucht oder online nach Fahrzeugen gesucht haben, ist der nächste Schritt, das Autohaus oder den Verkäufer zu kontaktieren.</p>
                         </div>
                       </div>
