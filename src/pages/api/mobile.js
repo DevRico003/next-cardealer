@@ -233,7 +233,7 @@ export default async function mobileHandler(req, res) {
         }
 
         currentPage = currentPage <= maxPages ? currentPage + 1 : 1;
-        console.log(`Moving to next page: ${currentPage}`);
+        // console.log(`Moving to next page: ${currentPage}`);
       } else {
         const currentError = getError();
         console.error('Error fetching data for page:', currentPage, currentError);
