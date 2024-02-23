@@ -1,160 +1,113 @@
+// Import required modules and utilities
 import fetch from 'node-fetch';
 import { Car } from '../../models/Car';
 import connectToDatabase from '../../utils/connectToDatabase';
 
+// Constants
+const BASE_URL = 'https://services.mobile.de/search-api/search';
+const DETAILS_BASE_URL = 'https://services.mobile.de/search-api/ad/';
+const CUSTOMER_NUMBER = '726774';
+const ENCODED_CREDENTIALS = process.env.ENCODED_CREDENTIALS;
+const ACCEPT_LANGUAGE = 'de';
+
+// Singleton pattern for instance management
 let instance = null;
+
+// Error handling variable
 let error = null;
-let currentPage = 1
 
-const encodedCredentials = process.env.ENCODED_CREDENTIALS
+// Current page tracking for pagination
+let currentPage = 1;
 
-const getInstance = () => {
-  if (instance === null) {
-    instance = {};
-  }
-  return instance;
-};
+// Retrieves or initializes the singleton instance
+const getInstance = () => instance ??= {};
 
-const getError = () => {
-  return error;
-};
+// Gets the last occurred error
+const getError = () => error;
 
-// Function to execute the API request
-const execute = async (queryParams) => {
+// Executes the API request with given query parameters
+const executeApiRequest = async () => {
   try {
-    const baseUrl = 'https://services.mobile.de/search-api/search';
-    const url = new URL(baseUrl);
-
-    // Hardcoded query parameter
-    const queryParams = { customerNumber: '726774', "page.number": Number(currentPage) };
-
-    // Append query parameters from the request to the URL
-    Object.keys(queryParams).forEach(key => {
-      url.searchParams.append(key, queryParams[key]);
-    });
+    const url = new URL(BASE_URL);
+    // Set query parameters including customer number and current page
+    url.searchParams.append('customerNumber', CUSTOMER_NUMBER);
+    url.searchParams.append('page.number', currentPage.toString());
 
     const headers = {
       'Accept': 'application/json',
-      'Authorization': `Basic ${encodedCredentials}`,
-      'Accept-Language': 'de', 
+      'Authorization': `Basic ${ENCODED_CREDENTIALS}`,
+      'Accept-Language': ACCEPT_LANGUAGE,
     };
 
-
-
-    const response = await fetch(url.toString(), { method: 'GET', headers: headers });
-
-    if (!response.ok) {
-      error = `HTTP error! status: ${response.status}, body: ${await response.text()}`;
-      console.error('Error fetching data:', error);  // Log the error
-      return false;
-    }
-
-    const jsonResponse = await response.json();
-    console.log('API Response:', jsonResponse);  // Log the entire JSON response
-    return jsonResponse;
-  } catch (e) {
-    error = e.message;
-    console.error('Exception during fetch:', error);  // Log the exception message
-    return false;
-  }
-};
-
-// Funktion, um Details für eine spezifische Car-ID abzurufen
-const fetchCarDetailsWithImages = async (carId) => {
-  const detailsUrl = `https://services.mobile.de/search-api/ad/${carId}`;
-  try {
-    const response = await fetch(detailsUrl, { 
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Basic ${encodedCredentials}`,
-        'Accept-Language': 'de'
-      }
-    });
+    const response = await fetch(url.toString(), { method: 'GET', headers });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`Error fetching details for car ID ${carId}:`, error.message);
-    return null;
+    return await response.json();
+  } catch (e) {
+    error = e.message;
+    throw e; // Rethrow to handle it in the caller function
   }
 };
 
+// Fetches details for a specific car ID
+const fetchCarDetailsWithImages = async (carId) => {
+  try {
+    const url = `${DETAILS_BASE_URL}${carId}`;
+    const headers = {
+      'Accept': 'application/json',
+      'Authorization': `Basic ${ENCODED_CREDENTIALS}`,
+      'Accept-Language': ACCEPT_LANGUAGE,
+    };
 
-// Function to retrieve the "$" or "@key" value from the specifics
+    const response = await fetch(url, { method: 'GET', headers });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (e) {
+    console.error(`Error fetching details for car ID ${carId}:`, e.message);
+    return null; // Return null to indicate failure
+  }
+};
+
+// Utility function to extract value from item specifics
 const getValue = (item) => {
-  // Check if the item is an object and not null
   if (typeof item === 'object' && item !== null) {
-    // Return the "$" value if it exists
-    if ("$" in item) {
-      return item["$"];
-    }
-    // If "$" doesn't exist, check and return the "@key" value
-    else if ("@key" in item) {
-      return item["@key"];
-    }
+    return item["$"] ?? item["@key"] ?? "Unknown";
   }
-  // Return the item itself if it's a primitive and not null or undefined
-  return item || "Unknown";
+  return item ?? "Unknown";
 };
 
-
-// Function to map the data to the required structure
+// Maps API data to the required structure for the application
 const mapData = (data) => {
-  if (!data["search-result"] || !data["search-result"]["ads"] || !Array.isArray(data["search-result"]["ads"].ad)) {
+  if (!data["search-result"]?.["ads"]?.ad?.length) {
     console.error("Unexpected data structure", data);
     return [];
   }
 
-  return data["search-result"]["ads"].ad.map((ad) => {
-    // Optional chaining to prevent accessing properties of undefined
-    const category = ad?.vehicle?.category;
-    const categoryDescription = category?.["local-description"]?.["$"];
-    const categoryUrl = category?.["@url"];
-    // Use optional chaining and nullish coalescing to safely access nested properties
-    const fuelType = ad?.vehicle?.specifics?.fuel?.["local-description"]?.["$"] ?? "Unknown";
-    const fuelKey = ad?.vehicle?.specifics.fuel?.["@key"];
-    // Safely access the numSeats value with optional chaining and nullish coalescing
-    const numSeats = ad?.vehicle?.specifics?.["num-seats"]?.["@value"] ?? "Unknown";
+  return data["search-result"]["ads"].ad.map(ad => { 
+    const specifics = ad?.vehicle?.specifics || {};
+    const features = ad?.vehicle?.features?.feature || [];
 
-
-    if (!categoryDescription || !categoryUrl) {
-      console.error("Category description or URL is undefined", ad);
-    }
-
-    // Ensure specifics is defined from the correct location
-    const specifics = ad?.vehicle?.specifics;
-
-    // Map specifics with the utility function, excluding 'fuel'
-    const mappedSpecifics = {};
-    for (const key in specifics) {
-      if (specifics.hasOwnProperty(key) && key !== 'fuel') { // Skip the 'fuel' key
-        const item = specifics[key];
-        const value = getValue(item["local-description"]) ?? getValue(item);
-        // Only add the key if the value is not "Unknown"
-        if (value !== "Unknown") {
-          mappedSpecifics[key] = value;
-        }
+    const mappedSpecifics = Object.keys(specifics).reduce((acc, key) => {
+      if (key !== 'fuel') {
+        const value = getValue(specifics[key]["local-description"]) ?? getValue(specifics[key]); 
+        if (value !== "Unknown") acc[key] = value;
       }
-    }
+      return acc;
+    }, {});
 
-    // Ensure features is defined from the correct location
-    const features = ad?.vehicle?.features;
-
-    // Map features with the utility function
-    const mappedFeatures = {};
-    for (const feature of features?.feature || []) {
-      const key = feature["@key"];
-      const value = getValue(feature["local-description"]) ?? getValue(feature);
-      // Only add the key if the value is not "Unknown"
-      if (value !== "Unknown") {
-        mappedFeatures[key] = value;
-      }
-    }
+    const mappedFeatures = features.reduce((acc, feature) => {
+      const key = feature["@key"]; // Extract key
+      const value = getValue(feature["local-description"]) ?? getValue(feature); // Extract local description
+      if (value !== "Unknown") acc[key] = value; // Only add if value is not "Unknown"
+      return acc;
+    }, {});
 
     return {
       id: parseInt(ad["@key"]),
@@ -163,89 +116,54 @@ const mapData = (data) => {
       carModel: `${ad?.vehicle?.make?.["local-description"]?.["$"]} ${ad?.vehicle?.model?.["local-description"]?.["$"]}`,
       mileage: `${ad?.vehicle?.specifics?.mileage?.["@value"]} km`,
       firstRegistration: ad["vehicle"]["specifics"]["first-registration"]["@value"],
-      fuelTypes: [fuelType],
-      isElectric: fuelKey === "HYBRID",
-      power: ad["vehicle"]["specifics"]["power"]["@value"] + " kW",
-      gearbox: ad["vehicle"]["specifics"]["gearbox"]["local-description"]["$"],
-      numSeats: numSeats,
-      price: parseFloat(ad["price"]["consumer-price-amount"]["@value"]),
-      // images: wird weiter unten von einem anderen api call geholt
+      fuelTypes: [getValue(ad?.vehicle?.specifics?.fuel?.["local-description"]) ?? "Unknown"],
+      isElectric: ad?.vehicle?.specifics.fuel?.["@key"] === "HYBRID",
+      power: `${ad["vehicle"]["specifics"]["power"]["@value"]} kW`,
+      gearbox: getValue(ad["vehicle"]["specifics"]["gearbox"]["local-description"]), // Extract local description
+      numSeats: getValue(ad?.vehicle?.specifics?.["num-seats"]?.["@value"]), // Extract value from @value
+      price: parseFloat(ad["price"]["consumer-price-amount"]["@value"]), // Convert to float
       category: {
-        name: categoryDescription,
-        slug: categoryUrl?.split('/').pop(),
+        name: getValue(ad?.vehicle?.category?.["local-description"]), // Extract name from local description
+        slug: ad?.vehicle?.category?.["@url"]?.split('/').pop(), // Extract slug from URL
       },
-      // Add all other specifics mappings as needed
-      ...mappedSpecifics,
-      ...mappedFeatures
+      ...mappedSpecifics, // Add mapped specifics to the object
+      ...mappedFeatures, // Add mapped features to the object
     };
   });
 };
 
-// Next.js API route handler
+// API route handler to process and store car data
 export default async function mobileHandler(req, res) {
-
-  let maxPages = null;
-  let allMappedData = []; // Store all mapped data across pages
-
   try {
-    // Verbinden Sie mit der Datenbank
     await connectToDatabase();
+    await Car.deleteMany({}); // Clear existing entries for simplicity
 
-    // Löschen aller vorhandenen Dokumente in der Car-Kollektion
-    await Car.deleteMany({});
+    let maxPages = null;
+    let allMappedData = [];
 
-    while (maxPages === null || currentPage <= maxPages) {
+    do {
       console.log(`Fetching data for page: ${currentPage}`);
+      const data = await executeApiRequest();
+      maxPages = parseInt(data["search-result"]["max-pages"], 10);
 
-      const queryParams = {
-        ...req.query,
-        "customerNumber": '726774',
-        "page.number": currentPage
-      };
+      const mappedData = mapData(data);
+      allMappedData.push(...mappedData);
 
-      const result = await execute(queryParams);
-
-      if (result) {
-        const jsonResponse = result;
-        maxPages = Number(jsonResponse["search-result"]["max-pages"]);
-
-        const mappedData = mapData(jsonResponse);
-        allMappedData = allMappedData.concat(mappedData);
-
-        
         for (const carData of mappedData) {
-
           const detailedCarData = await fetchCarDetailsWithImages(carData.id);
           if (detailedCarData && detailedCarData.ad && detailedCarData.ad.images && detailedCarData.ad.images.image) {
-            // Stellen Sie sicher, dass image immer als Array behandelt wird
             const imagesArray = Array.isArray(detailedCarData.ad.images.image) ? detailedCarData.ad.images.image : [detailedCarData.ad.images.image];
-            
-            // Nehmen Sie nur die erste Representation für jedes Bild
-            const images = imagesArray.map(img => img.representation[1]['@url']);
-            carData.images = images; // Fügt die Bilder zum Auto hinzu
-  }
-          const existingCar = await Car.findOne({ id: carData.id });
-          if (existingCar) {
-            await Car.updateOne({ id: carData.id }, carData);
-          } else {
-            await Car.create(carData);
+            carData.images = imagesArray.map(img => img.representation[1]['@url']);
           }
+          await Car.findOneAndUpdate({ id: carData.id }, carData, { upsert: true });
         }
 
-        currentPage = currentPage <= maxPages ? currentPage + 1 : 1;
-        console.log(`Moving to next page: ${currentPage}`);
-      } else {
-        const currentError = getError();
-        console.error('Error fetching data for page:', currentPage, currentError);
-        res.status(500).json({ error: `Failed at page ${currentPage}: ${currentError}` });
-        return;
-      }
-    }
+        currentPage = currentPage + 1;
+    } while (currentPage <= maxPages);
 
-    console.log('Data successfully processed and saved/updated in MongoDB');
     res.status(200).send(allMappedData);
-  } catch (error) {
-    console.error('Error during processing:', error);
-    res.status(500).json({ error: error.message || 'Unknown error occurred' });
+  } catch (e) {
+    console.error('Error during processing:', e);
+    res.status(500).json({ error: e.message || 'Unknown error occurred' });
   }
 }
