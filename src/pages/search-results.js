@@ -1,3 +1,4 @@
+// Import necessary React and Next.js functionalities, as well as components and styles.
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import MainLayout from '../layout/MainLayout';
@@ -5,100 +6,96 @@ import CarLeftSidebar from '../utils/CarLeftSidebar';
 import Link from 'next/link';
 
 function SearchResults() {
+  // State management for various components and data manipulation.
   const [results, setResults] = useState([]);
-  const router = useRouter();
-  const { id } = router.query;
+  const router = useRouter(); // Utilizing Next.js router for routing actions.
+  const { id } = router.query; // Extract query parameters, if any.
   const { query } = router;
-  const [activeClass, setActiveClass] = useState('grid-group-wrapper');
-  const [allCars, setAllCars] = useState([]);  // Store all cars from the API
-  const [displayedCars, setDisplayedCars] = useState([]);  // Cars to be displayed after filtering
-  const [displayedMakes, setDisplayedMakes] = useState([]);
-  const [makeFilter, setMakeFilter] = useState('');
-  const [modelFilter, setModelFilter] = useState([]);
-  const [fuelTypeFilter, setFuelTypeFilter] = useState([]);
-  const [gearboxFilter, setGearboxFilter] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [filteredCars, setFilteredCars] = useState([]);  // Autos after filters are applied
-  const itemsPerPage = 10;
+  const [activeClass, setActiveClass] = useState('grid-group-wrapper'); // For dynamic CSS classes.
+  const [allCars, setAllCars] = useState([]); // To store all cars fetched from the API.
+  const [displayedCars, setDisplayedCars] = useState([]); // Cars currently being displayed after filtering.
+  const [displayedMakes, setDisplayedMakes] = useState([]); // To store unique car makes for filtering options.
+  const [makeFilter, setMakeFilter] = useState(''); // Filter state for car makes.
+  const [modelFilter, setModelFilter] = useState([]); // Filter state for car models.
+  const [fuelTypeFilter, setFuelTypeFilter] = useState([]); // Filter state for fuel types.
+  const [gearboxFilter, setGearboxFilter] = useState([]); // Filter state for gearbox types.
+  const [currentPage, setCurrentPage] = useState(1); // Pagination current page.
+  const [filteredCars, setFilteredCars] = useState([]); // Cars after applying filters.
+  const itemsPerPage = 10; // Number of items to display per page.
 
+  // Fetching data from the API based on query parameters.
   useEffect(() => {
     async function fetchData() {
-        if(id) {
-            try {
-              const response = await fetch(`/api/getSearchResults?id=${id}`);
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              const data = await response.json();
-              setResults(data || []);
-              setAllCars(data || []);
-            } catch (error) {
-              console.error('Fetching search results failed:', error);
-              setResults([]);
-              setAllCars([]);
-            }
+      const { make, budget } = router.query;
+      if (make || budget) {
+        try {
+          // Construct the query string with URL-encoded parameters.
+          const queryString = `/api/search?${make ? `make=${encodeURIComponent(make)}` : ''}${make && budget ? '&' : ''}${budget ? `budget=${encodeURIComponent(budget)}` : ''}`;
+          const response = await fetch(queryString);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
-      
+          const data = await response.json();
+          setAllCars(data); // Update the state with fetched data.
+        } catch (error) {
+          console.error('Fetching search results failed:', error);
+        }
+      }
     }
-    fetchData();
-  }, [id]); // Abhängigkeit zu id hinzufügen
+    
+    if (router.isReady) {
+      fetchData();
+    }
+  }, [router.isReady, router.query]);
 
-// Apply filters whenever a filter changes or the full list of cars changes
-useEffect(() => {
-  let result = allCars; // Start with the full list of cars
+  // Filter application logic.
+  useEffect(() => {
+    let result = [...allCars]; // Clone the allCars array to avoid direct mutation.
 
-  if (makeFilter.length > 0) {
-    result = result.filter(car => makeFilter.includes(car.make));
-  }
-  if (modelFilter.length > 0) {
-    result = result.filter(car => modelFilter.includes(car.carModel));
-  }
-  if (fuelTypeFilter.length > 0) {
-    result = result.filter(car => 
-      car.fuelTypes.some(fuelType => fuelTypeFilter.includes(fuelType.trim()))
-    );
-  }
-  if (gearboxFilter.length > 0) {
-    result = result.filter(car => gearboxFilter.includes(car.gearbox));
-  }
+    // Apply filters based on state values. Filter method checks if the car's attribute matches the filter.
+    if (makeFilter.length > 0) {
+      result = result.filter(car => makeFilter.includes(car.make));
+    }
+    if (modelFilter.length > 0) {
+      result = result.filter(car => modelFilter.includes(car.carModel));
+    }
+    if (fuelTypeFilter.length > 0) {
+      result = result.filter(car => car.fuelTypes.some(fuelType => fuelTypeFilter.includes(fuelType.trim())));
+    }
+    if (gearboxFilter.length > 0) {
+      result = result.filter(car => gearboxFilter.includes(car.gearbox));
+    }
 
-  setFilteredCars(result);
-}, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, allCars]);
+    setFilteredCars(result); // Update the state with filtered results.
+  }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, allCars]);
 
-useEffect(() => {
-  const page = parseInt(query.page) || 1;
-  setCurrentPage(page);
-}, [query.page]);
+  // Pagination logic: Adjust displayed cars based on the current page and items per page.
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedCars = filteredCars.slice(startIndex, endIndex);
+    setDisplayedCars(paginatedCars); // Update displayed cars based on pagination.
 
-useEffect(() => {
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedCars = filteredCars.slice(startIndex, endIndex);
-  setDisplayedCars(paginatedCars);
-// Extrahieren Sie die Marken aus den paginierten Autos
-const newDisplayedMakes = [...new Set(paginatedCars.map(car => car.make))];
-setDisplayedMakes(newDisplayedMakes);
-}, [currentPage, itemsPerPage, filteredCars]);
+    // Extract unique makes from the displayed cars for filter options.
+    const newDisplayedMakes = [...new Set(paginatedCars.map(car => car.make))];
+    setDisplayedCars(paginatedCars); // Update the displayed cars (seems to be a redundant call, consider removing).
+  }, [allCars, makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, currentPage, itemsPerPage]);
 
+  // Handlers for filter changes and pagination.
+  const onMakeFilterChange = (newMakeFilter) => { setMakeFilter(newMakeFilter); };
+  const onModelFilterChange = (newModelFilter) => { setModelFilter(newModelFilter); };
+  const onFuelTypeFilterChange = (newFuelTypeFilter) => { setFuelTypeFilter(newFuelTypeFilter); };
+  const onGearboxFilterChange = (newGearboxFilter) => { setGearboxFilter(newGearboxFilter); };
 
-// Handlers for updating filters and pagination
-const onMakeFilterChange = (newMakeFilter) => { setMakeFilter(newMakeFilter); };
-const onModelFilterChange = (newModelFilter) => { setModelFilter(newModelFilter); };
-const onFuelTypeFilterChange = (newFuelTypeFilter) => { setFuelTypeFilter(newFuelTypeFilter); };
-const onGearboxFilterChange = (newGearboxFilter) => { setGearboxFilter(newGearboxFilter); };
+  const handlePageChange = (newPage) => {
+    const newQuery = { ...query, page: newPage }; // Update the query with the new page number.
+    router.push({ pathname: router.pathname, query: newQuery }); // Push the new query to the router.
 
-const handlePageChange = (newPage) => {
-  // Aktualisiere die URL mit der neuen Seite
-  const newQuery = { ...query, page: newPage };
-  router.push({ pathname: router.pathname, query: newQuery });
+    setCurrentPage(newPage); // Update the current page state.
+  };
 
-  setCurrentPage(newPage);
-};
-
-const totalPages = Math.ceil(filteredCars.length / itemsPerPage); // Calculate total pages based on filtered cars
-
-const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1); // Array of page numbers
-
+  const totalPages = Math.ceil(filteredCars.length / itemsPerPage); // Calculate the total number of pages.
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1); // Generate an array of page numbers.
 
 return (
   <MainLayout>
