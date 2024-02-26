@@ -26,7 +26,9 @@ function SearchResults() {
   // Fetching data from the API based on query parameters.
   useEffect(() => {
     async function fetchData() {
-      const { make, budget } = router.query;
+      const { make, budget, page } = router.query;
+      const pageToUse = page ? parseInt(page, 10) : 1; // Use page from URL or default to 1.
+      setCurrentPage(pageToUse); // Set the current page based on URL parameter or default to 1.  
       if (make || budget) {
         try {
           // Construct the query string with URL-encoded parameters.
@@ -69,17 +71,17 @@ function SearchResults() {
     setFilteredCars(result); // Update the state with filtered results.
   }, [makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, allCars]);
 
-  // Pagination logic: Adjust displayed cars based on the current page and items per page.
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedCars = filteredCars.slice(startIndex, endIndex);
-    setDisplayedCars(paginatedCars); // Update displayed cars based on pagination.
+  // Triggered when page number changes either by pagination or URL change.
+useEffect(() => {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedCars = filteredCars.slice(startIndex, endIndex);
+  setDisplayedCars(paginatedCars); // Update displayed cars based on pagination.
 
     // Extract unique makes from the displayed cars for filter options.
     const newDisplayedMakes = [...new Set(paginatedCars.map(car => car.make))];
-    setDisplayedCars(paginatedCars); // Update the displayed cars (seems to be a redundant call, consider removing).
-  }, [allCars, makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, currentPage, itemsPerPage]);
+    // setDisplayedCars(paginatedCars); // Update the displayed cars (seems to be a redundant call, consider removing).
+  }, [allCars, makeFilter, modelFilter, fuelTypeFilter, gearboxFilter, currentPage, itemsPerPage, filteredCars]);
 
   // Handlers for filter changes and pagination.
   const onMakeFilterChange = (newMakeFilter) => { setMakeFilter(newMakeFilter); };
