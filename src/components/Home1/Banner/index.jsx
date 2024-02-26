@@ -29,7 +29,7 @@ function index() {
 
   // Navigates to /search-results with make and budget as URL-encoded query parameters.
   const handleSearch = async () => {
-    router.push(`/search-results?make=${encodeURIComponent(selectedMake)}&budget=${encodeURIComponent(selectedBudget)}`);
+    router.push(`/search-results?make=${encodeURIComponent(selectedMake)}&budget=${encodeURIComponent(selectedBudget)}&page=1`);
   };
   
   const handleMakeChange = (value) => {
