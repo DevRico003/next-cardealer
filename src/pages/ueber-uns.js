@@ -35,11 +35,11 @@ function About() {
     }
     ,
     {
-      id:4,
+      id: 4,
       imageBig: "assets/img/inner-page/galerie/4.jpeg",
     },
     {
-      id:5,
+      id: 5,
       imageBig: "assets/img/inner-page/galerie/5.jpeg",
     }
     ,
@@ -76,6 +76,51 @@ function About() {
     {
       id: 12,
       imageBig: "assets/img/inner-page/galerie/12.jpeg"
+    }
+    ,
+    {
+      id:13,
+      imageBig: "assets/img/inner-page/galerie/13.jpeg",
+    }
+    ,
+    {
+      id: 14,
+      imageBig: "assets/img/inner-page/galerie/14.jpeg",
+    }
+    ,
+    {
+      id: 15,
+      imageBig: "assets/img/inner-page/galerie/15.jpeg",
+    }
+    ,
+    {
+      id: 16,
+      imageBig: "assets/img/inner-page/galerie/16.jpeg",
+    }
+    ,
+    {
+      id: 17,
+      imageBig: "assets/img/inner-page/galerie/17.jpeg",
+    }
+    ,
+    {
+      id: 18,
+      imageBig: "assets/img/inner-page/galerie/18.jpeg",
+    }
+    ,
+    {
+      id: 19,
+      imageBig: "assets/img/inner-page/galerie/19.jpeg",
+    }
+    ,
+    {
+      id: 20,
+      imageBig: "assets/img/inner-page/galerie/20.jpeg"
+    }
+    ,
+    {
+      id: 21,
+      imageBig: "assets/img/inner-page/galerie/21.jpeg"
     }
   ]
   const slideSettings = useMemo(()=>{
@@ -302,6 +347,60 @@ function About() {
               <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
                 <div className="gallery-item">
                   <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 11 })}  src="assets/img/inner-page/galerie/12.jpeg" alt="galery" />
+            
+                </div>
+              </div>
+              <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
+                <div className="gallery-item">
+                  <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 12 })}  src="assets/img/inner-page/galerie/13.jpeg" alt="galery" />
+            
+                </div>
+              </div>
+              <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
+                <div className="gallery-item">
+                  <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 13 })}  src="assets/img/inner-page/galerie/14.jpeg" alt="galery" />
+            
+                </div>
+              </div>
+              <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
+                <div className="gallery-item">
+                  <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 14 })}  src="assets/img/inner-page/galerie/15.jpeg" alt="galery" />
+            
+                </div>
+              </div>
+              <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
+                <div className="gallery-item">
+                  <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 15 })}  src="assets/img/inner-page/galerie/16.jpeg" alt="galery" />
+            
+                </div>
+              </div>
+              <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
+                <div className="gallery-item">
+                  <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 16 })}  src="assets/img/inner-page/galerie/17.jpeg" alt="galery" />
+            
+                </div>
+              </div>
+              <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
+                <div className="gallery-item">
+                  <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 17 })}  src="assets/img/inner-page/galerie/18.jpeg" alt="galery" />
+            
+                </div>
+              </div>
+              <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
+                <div className="gallery-item">
+                  <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 18 })}  src="assets/img/inner-page/galerie/19.jpeg" alt="galery" />
+            
+                </div>
+              </div>
+              <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
+                <div className="gallery-item">
+                  <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 19 })}  src="assets/img/inner-page/galerie/20.jpeg" alt="galery" />
+            
+                </div>
+              </div>
+              <div className="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="700ms" data-wow-duration="1500ms">
+                <div className="gallery-item">
+                  <img className="img-fluid" onClick={() =>setOpenimg({ openingState: true, openingIndex: 20 })}  src="assets/img/inner-page/galerie/21.jpeg" alt="galery" />
             
                 </div>
               </div>
