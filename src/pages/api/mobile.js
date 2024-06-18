@@ -165,7 +165,7 @@ const mapData = (data) => {
       firstRegistration: ad["vehicle"]["specifics"]["first-registration"]["@value"],
       fuelTypes: [fuelType],
       isElectric: fuelKey === "HYBRID",
-      power: ad["vehicle"]["specifics"]["power"]["@value"] + " PS",
+      power: ad["vehicle"]["specifics"]["power"]["@value"] + " KW",
       gearbox: ad["vehicle"]["specifics"]["gearbox"]["local-description"]["$"],
       numSeats: numSeats,
       price: parseFloat(ad["price"]["consumer-price-amount"]["@value"]),
